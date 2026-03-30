@@ -1,0 +1,273 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap');
+@import 'aos/dist/aos.css';
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  body {
+    font-family: 'Poppins', sans-serif;
+    overflow-x: hidden;
+    @apply text-dark;
+  }
+}
+
+@layer components {
+  /* Gradient Animation */
+  .gradient-animated {
+    background: linear-gradient(135deg, #098EBF 0%, #02BC69 50%, #098EBF 100%);
+    background-size: 200% 200%;
+    animation: gradient 3s ease infinite;
+  }
+  
+  .gradient-text {
+    background: linear-gradient(135deg, #098EBF 0%, #02BC69 100%);
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+  
+  /* Button Styles */
+  .btn-primary {
+    @apply bg-primary text-white px-6 py-2 rounded-md hover:bg-primary/90 transition-all duration-300 font-semibold;
+  }
+  
+  .btn-outline {
+    @apply border-2 border-primary text-primary hover:bg-primary hover:text-white duration-500 py-2 px-6 rounded-md tracking-wider font-semibold;
+  }
+  
+  /* Card Styles */
+  .service-card, .urban-card {
+    @apply bg-white rounded-xl shadow-lg p-6 text-center hover:shadow-xl transition-all duration-300 hover:-translate-y-1;
+  }
+  
+  .product-card {
+    @apply bg-white rounded-xl shadow-lg overflow-hidden hover:shadow-xl transition-all duration-300;
+  }
+  
+  .brand-card {
+    @apply bg-white rounded-lg p-4 shadow-md hover:shadow-lg transition-all duration-300;
+  }
+  
+  .stat-card {
+    @apply bg-white/10 backdrop-blur-md rounded-xl p-6;
+  }
+  
+  .process-card {
+    @apply relative bg-white rounded-xl p-6 text-center shadow-lg hover:shadow-xl transition-all duration-300;
+  }
+  
+  /* Contact Input */
+  .contact-input {
+    @apply w-full px-4 py-3 rounded-lg border border-gray-300 focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20 transition-all;
+  }
+  
+  /* Scrollbar Hide */
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+  .no-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+}
+
+/* Keyframes */
+@keyframes gradient {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-10px); }
+}
+
+.animate-float {
+  animation: float 3s ease-in-out infinite;
+}
+
+
+/* Gradient Animation Keyframes */
+@keyframes gradientMove {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+
+::-webkit-scrollbar-thumb {
+  background: linear-gradient(135deg, #0b86d0, #00c853);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(135deg, #00c853, #0b86d0);
+}
+
+
+/* Loading spinner animation */
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.animate-spin {
+  animation: spin 1s linear infinite;
+}
+
+
+/* src/index.css - Add these styles */
+
+/* Hide scrollbar for sidebar */
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+/* Main content area - allow scrolling */
+.main-content {
+  overflow-y: auto;
+  height: 100vh;
+}
+
+/* Fix for fixed sidebar */
+.fixed-sidebar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  overflow-y: auto;
+}
+
+/* Content wrapper for user panel */
+.user-panel-wrapper {
+  display: flex;
+  min-height: 100vh;
+}
+
+.user-panel-content {
+  flex: 1;
+  overflow-y: auto;
+  height: 100vh;
+}
+
+
+/* Product Details Page Styles */
+.product-detail {
+  background: #f8fbff;
+}
+
+.main-img-box {
+  background: #ffffff;
+  border-radius: 20px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.05);
+}
+
+.main-product-img {
+  max-height: 350px;
+  object-fit: contain;
+}
+
+.thumb-img {
+  width: 70px;
+  height: 70px;
+  object-fit: cover;
+  border-radius: 12px;
+  cursor: pointer;
+  border: 2px solid transparent;
+  transition: all 0.3s ease;
+}
+
+.thumb-img:hover {
+  border-color: #0b86d0;
+  transform: scale(1.05);
+}
+
+.features li {
+  list-style: none;
+  margin-bottom: 8px;
+}
+
+.price-box .new-price {
+  font-weight: 700;
+}
+
+.price-box .old-price {
+  text-decoration: line-through;
+}
+
+.price-box .off {
+  background: #ef4444;
+  color: white;
+  padding: 2px 8px;
+  border-radius: 20px;
+  font-size: 12px;
+}
+
+.qty-box button {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  border: 1px solid #e5e7eb;
+  background: white;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.qty-box button:hover {
+  border-color: #0b86d0;
+  color: #0b86d0;
+}
+
+.btn-premium {
+  background: linear-gradient(135deg, #0b86d0, #00c853);
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 8px;
+  font-weight: 600;
+  transition: all 0.3s ease;
+}
+
+.btn-premium:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 5px 15px rgba(0, 200, 83, 0.3);
+}
+
+.btn-outline-premium {
+  background: transparent;
+  border: 2px solid #0b86d0;
+  color: #0b86d0;
+  padding: 10px 20px;
+  border-radius: 8px;
+  font-weight: 600;
+  transition: all 0.3s ease;
+}
+
+.btn-outline-premium:hover {
+  background: linear-gradient(135deg, #0b86d0, #00c853);
+  color: white;
+  border-color: transparent;
+}

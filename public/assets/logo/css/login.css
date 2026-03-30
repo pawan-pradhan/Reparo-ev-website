@@ -1,0 +1,86 @@
+/* ================= LOGIN SECTION ================= */
+
+.login-section {
+    background: linear-gradient(135deg, #0b86d0, #00c853);
+}
+
+/* Glass Card */
+.login-card-reparo {
+    width: 100%;
+    max-width: 420px;
+    padding: 35px 25px;
+    border-radius: 20px;
+    background: rgba(255, 255, 255, 0.15);
+    backdrop-filter: blur(12px);
+    box-shadow: 0 15px 40px rgba(0,0,0,0.25);
+    transition: 0.4s ease;
+}
+
+.login-card-reparo:hover {
+    transform: translateY(-5px);
+}
+
+/* Buttons */
+.btn-login {
+    background: linear-gradient(270deg, #ffffff, #d4f8e8, #ffffff);
+    color: #0b86d0;
+    font-weight: 700;
+    border-radius: 10px;
+    padding: 12px;
+    border: none;
+    transition: 0.3s;
+}
+
+.btn-login:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+}
+
+.btn-verify {
+    background: linear-gradient(270deg, #0b86d0, #00c853);
+    color: white;
+    font-weight: 700;
+    border-radius: 10px;
+    padding: 12px;
+    border: none;
+    transition: 0.3s;
+}
+
+.btn-verify:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 15px 30px rgba(0,200,83,0.5);
+}
+
+/* OTP */
+.otp-container {
+    display: flex;
+    justify-content: center;
+    gap: 12px;
+}
+
+.otp-box {
+    width: 55px;
+    height: 55px;
+    border-radius: 10px;
+    border: none;
+    text-align: center;
+    font-size: 22px;
+    font-weight: 600;
+    background: rgba(255,255,255,0.9);
+}
+
+.otp-box:focus {
+    outline: none;
+    box-shadow: 0 0 10px rgba(0,200,83,0.8);
+}
+
+/* Resend */
+.resend-link {
+    color: #fff;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.resend-link:hover {
+    text-decoration: underline;
+}

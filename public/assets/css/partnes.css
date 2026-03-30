@@ -1,0 +1,32 @@
+.partner-hero {
+    background: linear-gradient(135deg,#0b86d0,#00c853);
+    color: white;
+}
+
+.partner-card {
+    background: white;
+    border-radius: 15px;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.05);
+    transition: 0.3s ease;
+}
+
+.partner-card:hover {
+    transform: translateY(-8px);
+}
+
+.process-box {
+    background: white;
+    padding: 20px;
+    border-radius: 12px;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.05);
+    transition: 0.3s ease;
+}
+
+.process-box:hover {
+    transform: translateY(-5px);
+}
+
+.partner-cta {
+    background: linear-gradient(135deg,#00c853,#0b86d0);
+    color: white;
+}
