@@ -74,8 +74,63 @@ const OtpVerification = () => {
       const response = await verifyOTP(mobile, otpValue)
       console.log('Verify Response:', response)
       
+      // if (response.message === 'Otp verified successfully') {
+      //   const { token, is_registered } = response.data
+        
+      //   // Store user ID for resend OTP
+      //   if (response.data?._id) {
+      //     setUserId(response.data._id)
+      //     sessionStorage.setItem('temp_user_id', response.data._id)
+      //   }
+        
+      //   if (is_registered === 0) {
+      //     // User not registered, go to registration
+      //     sessionStorage.setItem('temp_token', token)
+      //     sessionStorage.setItem('temp_mobile', mobile)
+      //     navigate('/register', { state: { mobile, token } })
+      //   } else {
+      //     // User already registered, fetch profile first then login
+      //     try {
+      //       const profileResponse = await getUserProfile()
+            
+      //       dispatch(login({
+      //         user: {
+      //           name: profileResponse.name,
+      //           email: profileResponse.email,
+      //           mobile_number: profileResponse.mobile_number,
+      //           city: profileResponse.city,
+      //           state: profileResponse.state,
+      //           address: profileResponse.address,
+      //           pincode: profileResponse.pincode,
+      //           _id: profileResponse._id || response.data._id
+      //         },
+      //         token: token
+      //       }))
+      //     } catch (err) {
+      //       // If profile fetch fails, login with basic info
+      //       dispatch(login({
+      //         user: { 
+      //           mobile_number: mobile,
+      //           _id: response.data._id
+      //         },
+      //         token: token
+      //       }))
+      //     }
+          
+      //     const redirectTo = sessionStorage.getItem('redirectAfterLogin') || '/dashboard'
+      //     sessionStorage.removeItem('redirectAfterLogin')
+      //     navigate(redirectTo)
+      //   }
+      // }
+
+      // src/pages/OtpVerification.jsx - In handleVerifyOTP function
       if (response.message === 'Otp verified successfully') {
         const { token, is_registered } = response.data
+        
+        // ✅ Store token in localStorage immediately
+        if (token) {
+          localStorage.setItem('token', token)
+        }
         
         // Store user ID for resend OTP
         if (response.data?._id) {
@@ -117,11 +172,12 @@ const OtpVerification = () => {
             }))
           }
           
-          const redirectTo = sessionStorage.getItem('redirectAfterLogin') || '/dashboard'
+          // const redirectTo = sessionStorage.getItem('redirectAfterLogin') || '/dashboard'
           sessionStorage.removeItem('redirectAfterLogin')
-          navigate(redirectTo)
+          navigate('/')
         }
-      } else {
+      }
+       else {
         setError(response.message || 'Invalid OTP. Please try again.')
       }
     } catch (err) {

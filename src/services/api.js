@@ -1,6 +1,4 @@
 // src/services/api.js
-
-
 import axios from 'axios'
 
 const API_BASE_URL = 'https://reparo24.com'
@@ -69,52 +67,6 @@ export const verifyOTP = async (mobile_number, otp) => {
   }
 }
 
-// export const registerUser = async (userData) => {
-//   try {
-//     const formData = new URLSearchParams()
-//     formData.append('name', userData.name)
-//     formData.append('email', userData.email)
-//     formData.append('city', userData.city)
-//     formData.append('state', userData.state)
-//     formData.append('address', userData.address)
-//     formData.append('pincode', userData.pincode)
-//     const response = await api.post('/web/user/register', formData)
-//     return response.data
-//   } catch (error) {
-//     console.error('Register Error:', error)
-//     throw error.response?.data || { message: 'Registration failed. Please try again.' }
-//   }
-// }
-
-// export const registerUser = async (userData, token) => {
-//   try {
-//     const formData = new URLSearchParams()
-//     formData.append('name', userData.name)
-//     formData.append('email', userData.email)
-//     formData.append('city', userData.city)
-//     formData.append('state', userData.state)
-//     formData.append('address', userData.address)
-//     formData.append('pincode', userData.pincode)
-    
-//     // ✅ Add token to request
-//     if (token) {
-//       formData.append('token', token)
-//     }
-    
-//     const response = await api.post('/web/user/register', formData, {
-//       headers: {
-//         'Content-Type': 'application/x-www-form-urlencoded',
-//       }
-//     })
-//     return response.data
-//   } catch (error) {
-//     console.error('Register Error:', error)
-//     throw error.response?.data || { message: 'Registration failed. Please try again.' }
-//   }
-// }
-
-// src/services/api.js
-
 export const registerUser = async (userData, token) => {
   try {
     const formData = new URLSearchParams()
@@ -138,43 +90,6 @@ export const registerUser = async (userData, token) => {
     throw error.response?.data || { message: 'Registration failed. Please try again.' }
   }
 }
-// export const registerUser = async (userData) => {
-//   try {
-//     const formData = new URLSearchParams()
-//     formData.append('name', userData.name)
-//     formData.append('email', userData.email)
-//     formData.append('city', userData.city)
-//     formData.append('state', userData.state)
-//     formData.append('address', userData.address)
-//     formData.append('pincode', userData.pincode)
-    
-//     const response = await api.post('/web/user/register', formData, {
-//       headers: {
-//         'Content-Type': 'application/x-www-form-urlencoded',
-//       }
-//     })
-//     return response.data
-//   } catch (error) {
-//     console.error('Register Error:', error)
-//     throw error.response?.data || { message: 'Registration failed. Please try again.' }
-//   }
-// }
-
-
-
-// ==================== USER PROFILE APIs ====================
-
-// export const getUserProfile = async () => {
-//   try {
-//     const response = await api.get('/web/user/get_profile')
-//     return response.data
-//   } catch (error) {
-//     console.error('Get Profile Error:', error)
-//     throw error.response?.data || { message: 'Failed to load profile' }
-//   }
-// }
-
-// Alternative: If you need to pass token as URL encoded in body
 
 
 export const getUserProfile = async () => {
@@ -557,27 +472,6 @@ export const getAllServices = async (cityId = '', categoryId = '') => {
 
 
 
-// export const createSupportTicket = async (ticketData) => {
-//   try {
-//     const formData = new URLSearchParams()
-//     formData.append('subject', ticketData.subject)
-//     formData.append('mobile_number', ticketData.mobile_number)
-//     formData.append('category', ticketData.category)
-//     formData.append('description', ticketData.message) // ✅ FIXED
-
-//     const response = await api.post('/web/api/create-support-ticket', formData)
-
-//     return response.data
-//   } catch (error) {
-//     console.error('Create Ticket Error:', error)
-//     throw error.response?.data || { message: 'Failed to create ticket' }
-//   }
-// }
-
-
-
-
-
 
 // Get all support tickets (REAL API)
 export const getSupportTickets = async () => {
@@ -622,6 +516,73 @@ export const replyToTicket = async (ticketId, comment) => {
   } catch (error) {
     console.error('Reply to Ticket Error:', error)
     throw error.response?.data || { message: 'Failed to send reply' }
+  }
+}
+
+
+
+
+// ---------------------======================================================================
+// Track Service Order
+export const trackServiceOrder = async (orderId) => {
+  try {
+    const formData = new URLSearchParams()
+    formData.append('orderId', orderId)
+    const response = await api.post('/web/track_service_order_status', formData)
+    return response.data
+  } catch (error) {
+    console.error('Track Service Order Error:', error)
+    throw error.response?.data || { message: 'Failed to track order' }
+  }
+}
+
+// Track Product Order
+export const trackProductOrder = async (orderId) => {
+  try {
+    const formData = new URLSearchParams()
+    formData.append('order_id', orderId)
+    const response = await api.post('/web/track_product_order_status', formData)
+    return response.data
+  } catch (error) {
+    console.error('Track Product Order Error:', error)
+    throw error.response?.data || { message: 'Failed to track order' }
+  }
+}
+
+// Get Product Order Items
+export const getProductOrderItems = async () => {
+  try {
+    const response = await api.get('/web/get_product_orderItems')
+    return response.data
+  } catch (error) {
+    console.error('Get Product Order Items Error:', error)
+    throw error.response?.data || { message: 'Failed to load product orders' }
+  }
+}
+
+// Download Service Invoice
+export const downloadServiceInvoice = async (orderId) => {
+  try {
+    const response = await api.get(`/web/download_invoice?id=${orderId}`, {
+      responseType: 'blob'
+    })
+    return response.data
+  } catch (error) {
+    console.error('Download Service Invoice Error:', error)
+    throw error.response?.data || { message: 'Failed to download invoice' }
+  }
+}
+
+// Download Product Invoice
+export const downloadProductInvoice = async (orderId) => {
+  try {
+    const response = await api.get(`/web/download_product_invoice?_id=${orderId}`, {
+      responseType: 'blob'
+    })
+    return response.data
+  } catch (error) {
+    console.error('Download Product Invoice Error:', error)
+    throw error.response?.data || { message: 'Failed to download invoice' }
   }
 }
 

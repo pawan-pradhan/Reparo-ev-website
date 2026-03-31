@@ -1,11 +1,20 @@
-import React from 'react'
+// src/pages/SocialHTML.jsx
+import React from 'react';
+import { useEffect } from 'react';
+import socialHTML from './social.html?raw';
 
-const SocialMedia = () => {
+const SocialHTML = () => {
+  useEffect(() => {
+  // Add vis class to all fi elements after a short delay
+  setTimeout(() => {
+    document.querySelectorAll('.fi').forEach(el => {
+      el.classList.add('vis');
+    });
+  }, 100);
+}, []);
   return (
-    <div className="container mx-auto py-20">
-      <h1 className="text-3xl font-bold text-center">Social Media Page</h1>
-    </div>
-  )
-}
+    <div dangerouslySetInnerHTML={{ __html: socialHTML }} />
+  );
+};
 
-export default SocialMedia
+export default SocialHTML;

@@ -1,0 +1,40 @@
+.checkout-section {
+    background:#f8fbff;
+}
+
+.checkout-card {
+    background:#fff;
+    padding:25px;
+    border-radius:15px;
+    box-shadow:0 10px 25px rgba(0,0,0,0.05);
+}
+
+/* Payment */
+.payment-box {
+    display:flex;
+    flex-direction:column;
+    gap:10px;
+}
+
+.payment-option {
+    padding:10px;
+    border:1px solid #ddd;
+    border-radius:8px;
+    cursor:pointer;
+}
+
+/* Button */
+.btn-gradient {
+    background:linear-gradient(45deg,#0b86d0,#00c853);
+    color:#fff;
+    border:none;
+    padding:12px;
+    border-radius:8px;
+}
+
+/* Order item */
+.order-item {
+    display:flex;
+    justify-content:space-between;
+    margin-bottom:10px;
+}

@@ -11,7 +11,11 @@ const Footer = () => {
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8 text-center md:text-left">
           {/* Logo & About */}
           <div className="flex flex-col items-center md:items-start">
-            <h5 className="text-primary text-2xl font-bold mb-2">Reparo ⚡</h5>
+            {/* <h5 className="text-primary text-2xl font-bold mb-2">Reparo ⚡</h5> */}
+            {/* Logo */}
+            <Link to="/" className="flex items-center">
+              <img src="/assets/logo/logo.png" alt="Reparo Logo" className="h-12 w-auto" />
+            </Link>
             <p className="text-sm text-gray-300 max-w-xs">
               Smart EV service marketplace for bikes & scooters.
             </p>

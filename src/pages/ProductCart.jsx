@@ -6,7 +6,10 @@ import { useProductCart } from '../context/ProductCartContext'
 const ProductCart = () => {
   const navigate = useNavigate()
   const { cartItems, updateQuantity, removeFromCart, getTotals } = useProductCart()
+  console.log("🚀 ~ ProductCart ~ cartItems:", cartItems)
   const { subtotal, gst, total } = getTotals()
+  console.log("🚀 ~ ProductCart ~ total:", total)
+  console.log("🚀 ~ ProductCart ~ gst:", gst)
 
   const handleProceedToCheckout = () => {
     navigate('/product-checkout')

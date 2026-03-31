@@ -1,47 +1,230 @@
 // src/pages/user/TrackOrder.jsx
-import React, { useState } from 'react'
-import { useParams } from 'react-router-dom'
+import React, { useState, useEffect } from 'react'
+import { useParams, useSearchParams } from 'react-router-dom'
 import Sidebar from '../../components/user/Sidebar'
 
 const TrackOrder = () => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
   const { id } = useParams()
+  const [searchParams] = useSearchParams()
+  const type = searchParams.get('type') || 'service'
+  
+  const [order, setOrder] = useState(null)
+  const [loading, setLoading] = useState(true)
+  const [error, setError] = useState('')
 
-  const order = {
-    id: id,
-    service: 'Battery Repair',
-    amount: 1499,
-    date: '12 Mar 2026',
-    technician: { name: 'Ravi Kumar', phone: '9876543210', role: 'EV Technician' },
-    timeline: [
-      { step: 'Order Placed', time: '12 Mar, 10:30 AM', status: 'completed' },
-      { step: 'Technician Assigned', time: '12 Mar, 11:00 AM', status: 'completed' },
-      { step: 'Service In Progress', time: 'Ongoing', status: 'in-progress' },
-      { step: 'Service Completed', time: 'Pending', status: 'pending' },
-    ]
+  useEffect(() => {
+    fetchOrderStatus()
+  }, [id, type])
+
+  const fetchOrderStatus = async () => {
+    try {
+      setLoading(true)
+      const token = localStorage.getItem('token')
+      
+      let url = ''
+      if (type === 'service') {
+        url = 'https://reparo24.com/web/track_service_order_status'
+      } else {
+        url = 'https://reparo24.com/web/track_product_order_status'
+      }
+      
+      const formData = new URLSearchParams()
+      formData.append(type === 'service' ? 'orderId' : 'order_id', id)
+      
+      const response = await fetch(url, {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${token}`,
+          'Content-Type': 'application/x-www-form-urlencoded',
+        },
+        body: formData.toString()
+      })
+      
+      const data = await response.json()
+      console.log('Track Order Response:', data)
+      
+      if (data.message === 'Order fetched successfully') {
+        setOrder(data.data)
+      } else {
+        setError(data.message || 'Order not found')
+      }
+    } catch (error) {
+      console.error('Error fetching order:', error)
+      setError('Failed to load order details')
+    } finally {
+      setLoading(false)
+    }
   }
 
-  const getTimelineIcon = (status) => {
-    switch (status) {
+  const formatDate = (dateString) => {
+    if (!dateString) return 'N/A'
+    const date = new Date(dateString)
+    return date.toLocaleDateString('en-IN', {
+      day: '2-digit',
+      month: 'short',
+      year: 'numeric',
+      hour: '2-digit',
+      minute: '2-digit'
+    })
+  }
+
+  const getStatusInfo = (status) => {
+    switch (status?.toLowerCase()) {
+      case 'pending':
+        return { text: 'Order Pending', color: 'text-orange-600', bg: 'bg-orange-100', icon: '⏳' }
+      case 'confirmed':
+        return { text: 'Order Confirmed', color: 'text-blue-600', bg: 'bg-blue-100', icon: '✓' }
+      case 'assigned':
+        return { text: 'On The Way', color: 'text-yellow-600', bg: 'bg-yellow-100', icon: '🚚' }
+      case 'completed':
+        return { text: 'Delivered', color: 'text-green-600', bg: 'bg-green-100', icon: '✅' }
+      case 'cancelled':
+        return { text: 'Cancelled', color: 'text-red-600', bg: 'bg-red-100', icon: '❌' }
+      default:
+        return { text: status || 'Pending', color: 'text-gray-600', bg: 'bg-gray-100', icon: '📦' }
+    }
+  }
+
+  // Timeline steps based on order status
+  const getTimelineSteps = () => {
+    const status = order?.status?.toLowerCase()
+    
+    if (type === 'service') {
+      const steps = [
+        { 
+          label: 'Order Placed', 
+          time: order?.date ? formatDate(order.date) : 'Pending',
+          status: status === 'cancelled' ? 'cancelled' : 'completed'
+        },
+        { 
+          label: 'Technician Assigned', 
+          time: status === 'assigned' || status === 'completed' ? 'Assigned' : 'Pending',
+          status: status === 'assigned' || status === 'completed' ? 'completed' : 
+                  status === 'cancelled' ? 'cancelled' : 'pending'
+        },
+        { 
+          label: 'Service In Progress', 
+          time: status === 'completed' ? 'Completed' : 'Ongoing',
+          status: status === 'completed' ? 'completed' : 
+                  status === 'assigned' ? 'active' :
+                  status === 'cancelled' ? 'cancelled' : 'pending'
+        },
+        { 
+          label: 'Service Completed', 
+          time: status === 'completed' ? 'Completed' : 'Pending',
+          status: status === 'completed' ? 'completed' : 
+                  status === 'cancelled' ? 'cancelled' : 'pending'
+        }
+      ]
+      return steps
+    } else {
+      // Product timeline
+      const steps = [
+        { 
+          label: 'Order Placed', 
+          time: order?.date ? formatDate(order.date) : 'Pending',
+          status: status === 'cancelled' ? 'cancelled' : 'completed'
+        },
+        { 
+          label: 'Order Confirmed', 
+          time: status === 'confirmed' || status === 'assigned' || status === 'completed' ? 'Confirmed' : 'Pending',
+          status: status === 'confirmed' || status === 'assigned' || status === 'completed' ? 'completed' : 
+                  status === 'cancelled' ? 'cancelled' : 'pending'
+        },
+        { 
+          label: 'Out for Delivery', 
+          time: status === 'assigned' || status === 'completed' ? 'On The Way' : 'Pending',
+          status: status === 'assigned' || status === 'completed' ? 'active' : 
+                  status === 'cancelled' ? 'cancelled' : 'pending'
+        },
+        { 
+          label: 'Delivered', 
+          time: status === 'completed' ? 'Delivered' : 'Pending',
+          status: status === 'completed' ? 'completed' : 
+                  status === 'cancelled' ? 'cancelled' : 'pending'
+        }
+      ]
+      return steps
+    }
+  }
+
+  const getStepIcon = (stepStatus) => {
+    switch (stepStatus) {
       case 'completed':
         return '✓'
-      case 'in-progress':
+      case 'active':
         return '⏳'
+      case 'cancelled':
+        return '✗'
       default:
         return '○'
     }
   }
 
-  const getTimelineColor = (status) => {
-    switch (status) {
+  const getStepColor = (stepStatus) => {
+    switch (stepStatus) {
+      case 'completed':
+        return 'text-green-600 border-green-500 bg-green-500'
+      case 'active':
+        return 'text-yellow-500 border-yellow-500 bg-yellow-500 animate-pulse'
+      case 'cancelled':
+        return 'text-red-600 border-red-500 bg-red-500'
+      default:
+        return 'text-gray-400 border-gray-300 bg-white'
+    }
+  }
+
+  const getStepTextColor = (stepStatus) => {
+    switch (stepStatus) {
       case 'completed':
         return 'text-green-600'
-      case 'in-progress':
-        return 'text-yellow-500'
+      case 'active':
+        return 'text-yellow-600'
+      case 'cancelled':
+        return 'text-red-600'
       default:
         return 'text-gray-400'
     }
   }
+
+  if (loading) {
+    return (
+      <div className="flex min-h-screen bg-gray-100">
+        <Sidebar isOpen={mobileMenuOpen} onClose={() => setMobileMenuOpen(false)} />
+        <div className="flex-1 ml-0 md:ml-64 flex items-center justify-center">
+          <div className="text-center">
+            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary mx-auto"></div>
+            <p className="mt-4 text-gray-600">Loading order details...</p>
+          </div>
+        </div>
+      </div>
+    )
+  }
+
+  if (error || !order) {
+    return (
+      <div className="flex min-h-screen bg-gray-100">
+        <Sidebar isOpen={mobileMenuOpen} onClose={() => setMobileMenuOpen(false)} />
+        <div className="flex-1 ml-0 md:ml-64 flex items-center justify-center">
+          <div className="text-center">
+            <div className="text-6xl mb-4">🔍</div>
+            <h3 className="text-xl font-semibold mb-2">Order Not Found</h3>
+            <p className="text-gray-500">{error || 'Unable to find order details'}</p>
+            <button 
+              onClick={() => window.history.back()}
+              className="mt-4 gradient-animated text-white px-4 py-2 rounded-lg"
+            >
+              Go Back
+            </button>
+          </div>
+        </div>
+      </div>
+    )
+  }
+
+  const statusInfo = getStatusInfo(order.status)
+  const timelineSteps = getTimelineSteps()
 
   return (
     <div className="flex min-h-screen bg-gray-100">
@@ -63,7 +246,14 @@ const TrackOrder = () => {
             {/* Header */}
             <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-4 flex justify-between items-center">
               <h4 className="font-semibold">Track Order</h4>
-              <span className="text-sm text-gray-500">Order ID: #{order.id}</span>
+              <span className="text-sm text-gray-500">Order ID: #{id?.slice(-8)}</span>
+            </div>
+
+            {/* Status Badge */}
+            <div className={`${statusInfo.bg} rounded-xl p-4 text-center`}>
+              <span className={`text-lg font-semibold ${statusInfo.color}`}>
+                {statusInfo.icon} {statusInfo.text}
+              </span>
             </div>
 
             {/* Map Placeholder */}
@@ -73,65 +263,76 @@ const TrackOrder = () => {
               </div>
             </div>
 
-            {/* Technician Info */}
-            <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-4 flex items-center gap-4">
-              <img
-                src="https://via.placeholder.com/60"
-                alt="Technician"
-                className="rounded-full w-14 h-14 object-cover"
-              />
-              <div className="flex-1">
-                <h5 className="font-semibold">{order.technician.name}</h5>
-                <p className="text-sm text-gray-500">{order.technician.role}</p>
-              </div>
-              <a
-                href={`tel:${order.technician.phone}`}
-                className="bg-[#00c853] text-white px-4 py-2 rounded-lg text-sm hover:bg-[#00c853]/90 transition"
-              >
-                Call
-              </a>
-            </div>
-
             {/* Order Details */}
             <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-4">
-              <h5 className="font-semibold mb-3">Service Details</h5>
+              <h5 className="font-semibold mb-3">
+                {type === 'service' ? 'Service Details' : 'Product Details'}
+              </h5>
               <div className="space-y-2">
                 <div className="flex justify-between text-sm">
-                  <span className="text-gray-500">Service</span>
-                  <span className="font-medium">{order.service}</span>
+                  <span className="text-gray-500">
+                    {type === 'service' ? 'Service' : 'Product'}
+                  </span>
+                  <span className="font-medium">
+                    {type === 'service' ? order.service_name : order.product_name}
+                  </span>
                 </div>
                 <div className="flex justify-between text-sm">
+                  <span className="text-gray-500">Customer</span>
+                  <span className="font-medium">{order.user_name}</span>
+                </div>
+                {type === 'product' && (
+                  <>
+                    <div className="flex justify-between text-sm">
+                      <span className="text-gray-500">Quantity</span>
+                      <span className="font-medium">{order.quantity}</span>
+                    </div>
+                    <div className="flex justify-between text-sm">
+                      <span className="text-gray-500">Unit Price</span>
+                      <span className="font-medium">₹{order.price}</span>
+                    </div>
+                  </>
+                )}
+                <div className="flex justify-between text-sm">
                   <span className="text-gray-500">Date</span>
-                  <span>{order.date}</span>
+                  <span>{formatDate(order.date)}</span>
                 </div>
                 <div className="flex justify-between text-sm">
                   <span className="text-gray-500">Amount</span>
-                  <span className="text-[#0b86d0] font-semibold">₹{order.amount}</span>
+                  <span className="text-primary font-semibold">₹{order.amount}</span>
                 </div>
               </div>
             </div>
 
-            {/* Timeline */}
+            {/* Timeline - HTML Design */}
             <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-5">
               <h5 className="font-semibold mb-4">Order Timeline</h5>
-              <div className="space-y-4">
-                {order.timeline.map((step, index) => (
-                  <div key={index} className="flex items-start gap-3">
-                    <div className={`w-6 h-6 rounded-full flex items-center justify-center border-2 ${
-                      step.status === 'completed' ? 'border-green-500 bg-green-500 text-white' :
-                      step.status === 'in-progress' ? 'border-yellow-500 bg-yellow-500 text-white' :
-                      'border-gray-300 bg-white text-gray-400'
-                    }`}>
-                      {getTimelineIcon(step.status)}
-                    </div>
-                    <div className="flex-1">
-                      <h6 className={`font-medium ${getTimelineColor(step.status)}`}>
-                        {step.step}
+              <div className="relative border-l-2 border-gray-200 pl-6 space-y-6">
+                {timelineSteps.map((step, index) => {
+                  const isCompleted = step.status === 'completed'
+                  const isActive = step.status === 'active'
+                  const isCancelled = step.status === 'cancelled'
+                  
+                  return (
+                    <div key={index} className="relative">
+                      <div className={`absolute -left-8 w-4 h-4 rounded-full ${
+                        isCancelled ? 'bg-red-500' :
+                        isCompleted ? 'bg-green-500' :
+                        isActive ? 'bg-yellow-500 animate-pulse' :
+                        'bg-gray-300'
+                      }`} />
+                      <h6 className={`font-medium ${
+                        isCancelled ? 'text-red-600' :
+                        isCompleted ? 'text-green-600' :
+                        isActive ? 'text-yellow-600' :
+                        'text-gray-400'
+                      }`}>
+                        {step.label}
                       </h6>
                       <p className="text-sm text-gray-500">{step.time}</p>
                     </div>
-                  </div>
-                ))}
+                  )
+                })}
               </div>
             </div>
           </div>
@@ -142,160 +343,3 @@ const TrackOrder = () => {
 }
 
 export default TrackOrder
-
-
-
-
-
-
-
-
-
-// import React, { useState, useEffect } from 'react'
-// import { useParams } from 'react-router-dom'
-// import Sidebar from '../../components/user/Sidebar'
-// import { getUserOrders } from '../../services/api'
-
-// const TrackOrder = () => {
-//   const { id } = useParams()
-//   const [order, setOrder] = useState(null)
-//   const [loading, setLoading] = useState(true)
-
-//   useEffect(() => {
-//     fetchOrderDetails()
-//   }, [id])
-
-//   const fetchOrderDetails = async () => {
-//     try {
-//       const response = await getUserOrders()
-//       const foundOrder = response.data.find(o => o.id === parseInt(id))
-//       setOrder(foundOrder)
-//     } catch (error) {
-//       console.error('Error fetching order:', error)
-//     } finally {
-//       setLoading(false)
-//     }
-//   }
-
-//   const getTimelineStatus = (status) => {
-//     switch (status) {
-//       case 'completed':
-//         return 'text-green-600'
-//       case 'in-progress':
-//         return 'text-yellow-500 animate-pulse'
-//       case 'pending':
-//         return 'text-gray-400'
-//       default:
-//         return 'text-gray-400'
-//     }
-//   }
-
-//   if (loading) {
-//     return (
-//       <div className="flex min-h-screen bg-gray-100">
-//         <Sidebar />
-//         <div className="flex-1 md:ml-64 flex items-center justify-center">
-//           <div className="text-center">Loading...</div>
-//         </div>
-//       </div>
-//     )
-//   }
-
-//   if (!order) {
-//     return (
-//       <div className="flex min-h-screen bg-gray-100">
-//         <Sidebar />
-//         <div className="flex-1 md:ml-64 flex items-center justify-center">
-//           <div className="text-center">Order not found</div>
-//         </div>
-//       </div>
-//     )
-//   }
-
-//   return (
-//     <div className="flex min-h-screen bg-gray-100">
-//       <Sidebar />
-      
-//       <div className="flex-1 md:ml-64">
-//         <div className="bg-white shadow-sm p-4">
-//           <h4 className="font-semibold text-lg">Track Order 📦</h4>
-//         </div>
-
-//         <div className="p-4">
-//           <div className="max-w-4xl mx-auto">
-//             {/* Header */}
-//             <div className="bg-white p-4 rounded-xl shadow-sm mb-4 flex justify-between items-center">
-//               <h4 className="font-semibold">Track Order 📦</h4>
-//               <span className="text-sm text-gray-500">Order ID: #{order.id}</span>
-//             </div>
-
-//             {/* Map */}
-//             <div className="bg-white p-4 rounded-xl shadow-sm mb-4">
-//               <div className="h-56 rounded-lg bg-gradient-to-r from-gray-200 to-gray-300 flex items-center justify-center text-gray-500">
-//                 📍 Live Map Tracking (Coming Soon)
-//               </div>
-//             </div>
-
-//             {/* Technician Info */}
-//             <div className="bg-white p-4 rounded-xl shadow-sm mb-4 flex items-center gap-4">
-//               <img
-//                 src="https://via.placeholder.com/60"
-//                 alt="Technician"
-//                 className="rounded-full w-14 h-14"
-//               />
-//               <div className="flex-1">
-//                 <h5 className="font-semibold">Ravi Kumar</h5>
-//                 <p className="text-sm text-gray-500">EV Technician</p>
-//               </div>
-//               <a
-//                 href="tel:9876543210"
-//                 className="bg-[#00c853] text-white px-4 py-2 rounded-lg text-sm hover:bg-[#00c853]/90 transition"
-//               >
-//                 Call
-//               </a>
-//             </div>
-
-//             {/* Order Details */}
-//             <div className="bg-white p-4 rounded-xl shadow-sm mb-4">
-//               <h5 className="font-semibold mb-3">Service Details</h5>
-//               <div className="flex justify-between text-sm mb-2">
-//                 <span>Service</span>
-//                 <span className="font-medium">{order.service}</span>
-//               </div>
-//               <div className="flex justify-between text-sm mb-2">
-//                 <span>Date</span>
-//                 <span>{order.date}</span>
-//               </div>
-//               <div className="flex justify-between text-sm">
-//                 <span>Amount</span>
-//                 <span className="text-[#0b86d0] font-semibold">₹{order.amount}</span>
-//               </div>
-//             </div>
-
-//             {/* Timeline */}
-//             <div className="bg-white p-5 rounded-xl shadow-sm">
-//               <h5 className="font-semibold mb-4">Order Timeline</h5>
-//               <div className="relative border-l-2 border-gray-200 pl-6 space-y-6">
-//                 {order.timeline?.map((step, index) => (
-//                   <div key={index} className="relative">
-//                     <div className={`absolute -left-8 w-4 h-4 rounded-full ${
-//                       step.status === 'completed' ? 'bg-green-500' :
-//                       step.status === 'in-progress' ? 'bg-yellow-500 animate-pulse' :
-//                       'bg-gray-300'
-//                     }`} />
-//                     <h6 className={`font-medium ${getTimelineStatus(step.status)}`}>
-//                       {step.step}
-//                     </h6>
-//                     <p className="text-sm text-gray-500">{step.time}</p>
-//                   </div>
-//                 ))}
-//               </div>
-//             </div>
-//           </div>
-//         </div>
-//       </div>
-//     </div>
-//   )
-// }
-
-// export default TrackOrder
