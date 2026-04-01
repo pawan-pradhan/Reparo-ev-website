@@ -15,7 +15,13 @@ const Partners = () => {
           <p className="text-lg text-white/90 mb-6">
             Join India's Fast Growing EV Service Network
           </p>
-          <button className="bg-white text-[#0b86d0] px-8 py-3 rounded-lg font-semibold hover:shadow-lg transition">
+          {/* <button className="bg-white text-[#0b86d0] px-8 py-3 rounded-lg font-semibold hover:shadow-lg transition">
+            Start Registration
+          </button> */}
+          <button
+            onClick={() => window.open("http://forms.gle/2RVerPAQwj2ehBYQ9", "_blank")}
+            className="bg-white text-[#0b86d0] px-8 py-3 rounded-lg font-semibold hover:shadow-lg transition"
+          >
             Start Registration
           </button>
         </div>

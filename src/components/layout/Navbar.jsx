@@ -30,7 +30,7 @@ const Navbar = () => {
     { path: '/shop', label: 'Shop' },
     { path: '/services', label: 'Services' },
     { path: '/partners', label: 'Partners' },
-    { path: '/social', label: 'Social Media' },
+    // { path: '/social', label: 'Social Media' },
     { path: '/contact', label: 'Contact Us' },
     { path: '/faqs', label: "FAQ's" },
   ]

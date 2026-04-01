@@ -143,7 +143,7 @@ const ServiceDetails = () => {
             </p>
 
             {/* FEATURES */}
-            <ul className="features list-none p-0 mb-4">
+            {/* <ul className="features list-none p-0 mb-4">
               {service.features && service.features.length > 0 ? (
                 service.features.map((feature, idx) => (
                   <li key={idx} className="flex items-center gap-2 text-gray-700 mb-2">
@@ -166,7 +166,7 @@ const ServiceDetails = () => {
                   </li>
                 </>
               )}
-            </ul>
+            </ul> */}
 
             {/* QTY BOX */}
             <div className="qty-box flex items-center gap-3 mt-3">

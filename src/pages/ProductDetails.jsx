@@ -188,13 +188,13 @@ const ProductDetails = () => {
             </p>
 
             {/* FEATURES */}
-            <ul className="features list-none p-0 mb-4">
+            {/* <ul className="features list-none p-0 mb-4">
               {product.features.map((feature, idx) => (
                 <li key={idx} className="flex items-center gap-2 text-gray-700 mb-2">
                   <span className="text-primary">✔</span> {feature.title}
                 </li>
               ))}
-            </ul>
+            </ul> */}
 
             {/* QTY BOX */}
             <div className="qty-box flex items-center gap-3 mt-3">
@@ -240,7 +240,7 @@ const ProductDetails = () => {
         </div>
 
         {/* KEY FEATURES BOX */}
-        <div className="product-features-box mt-4 p-4 bg-gray-50 rounded-xl">
+        {/* <div className="product-features-box mt-4 p-4 bg-gray-50 rounded-xl">
           <h5 className="font-bold text-lg mb-3">Key Features</h5>
           <ul className="feature-list grid grid-cols-1 md:grid-cols-2 gap-2">
             {product.features.map((feature, idx) => (
@@ -249,7 +249,7 @@ const ProductDetails = () => {
               </li>
             ))}
           </ul>
-        </div>
+        </div> */}
 
         {/* WHY CHOOSE REPARO BOX */}
         <div className="product-highlights-box mt-4 p-4 bg-gradient-to-r from-primary/10 to-secondary/10 rounded-xl">

@@ -275,7 +275,7 @@ const ProductCheckout = () => {
                 {/* PAYMENT METHOD */}
                 <h5 className="font-semibold text-lg mt-6 mb-3">Payment Method</h5>
                 <div className="payment-box space-y-3">
-                  <label className="flex items-center gap-3 p-3 border rounded-lg cursor-pointer hover:bg-gray-50">
+                  {/* <label className="flex items-center gap-3 p-3 border rounded-lg cursor-pointer hover:bg-gray-50">
                     <input
                       type="radio"
                       name="payment"
@@ -285,7 +285,7 @@ const ProductCheckout = () => {
                       className="w-4 h-4 text-primary"
                     />
                     <span>Cash on Delivery</span>
-                  </label>
+                  </label> */}
                   <label className="flex items-center gap-3 p-3 border rounded-lg cursor-pointer hover:bg-gray-50">
                     <input
                       type="radio"
