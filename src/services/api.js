@@ -454,7 +454,7 @@ export const getAllServices = async (cityId = '', categoryId = '') => {
     // Build query params
     const params = new URLSearchParams()
     if (cityId) params.append('city_id', cityId)
-    if (categoryId) params.append('category_id', categoryId)
+    if (categoryId) params.append('servicecategory_id', categoryId)
     
     const queryString = params.toString()
     const url = `/web/api/get_all_services${queryString ? `?${queryString}` : ''}`
