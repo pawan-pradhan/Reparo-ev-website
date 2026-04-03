@@ -169,7 +169,7 @@ const ServiceDetails = () => {
             </ul> */}
 
             {/* QTY BOX */}
-            <div className="qty-box flex items-center gap-3 mt-3">
+            {/* <div className="qty-box flex items-center gap-3 mt-3">
               <button 
                 onClick={() => handleQuantityChange(-1)}
                 className="w-8 h-8 rounded-full border border-gray-300 hover:border-primary hover:text-primary transition flex items-center justify-center"
@@ -183,17 +183,17 @@ const ServiceDetails = () => {
               >
                 +
               </button>
-            </div>
+            </div> */}
 
             {/* BUTTONS - Only Book Now */}
-            <div className="flex gap-3 mt-4">
+            {/* <div className="flex gap-3 mt-4">
               <button
                 onClick={handleBookNow}
                 className="flex-1 gradient-animated text-white py-2 rounded-lg font-semibold hover:opacity-90 transition"
               >
                 ⚡ Book Now
               </button>
-            </div>
+            </div> */}
           </div>
         </div>
 

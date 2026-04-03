@@ -4,6 +4,7 @@ import { Link, useNavigate } from 'react-router-dom'
 import { useSelector } from 'react-redux'
 import { useCart } from '../context/CartContext'
 import { getAllServices } from '../services/api'
+import BrandsSection from '../components/home/BrandsSection'
 
 const Services = () => {
   const navigate = useNavigate()
@@ -179,7 +180,6 @@ const Services = () => {
                     <div className="w-12 h-12 rounded-full bg-gradient-to-r from-[#0b86d0] to-[#00c853] flex items-center justify-center text-white text-xl">
                       <i className={`bi ${service.icon}`}></i>
                     </div>
-                    {/* ✅ Title with link to service details */}
                     <Link to={`/service/${service.serviceId}`} className="flex-1">
                       <h5 className="text-lg font-semibold hover:text-primary transition-colors">
                         {service.title}
@@ -188,12 +188,12 @@ const Services = () => {
                   </div>
                   <p className="text-gray-500 text-sm mb-2">Starting from ₹{service.price}</p>
                   <p className="text-gray-400 text-xs mb-4 line-clamp-2">{service.description}</p>
-                  <button
+                  {/* <button
                     onClick={() => handleBookNow(service)}
                     className="w-full bg-gradient-to-r from-[#0b86d0] to-[#00c853] text-white py-2 rounded-lg font-semibold hover:opacity-90 transition"
                   >
                     ⚡ Book Now
-                  </button>
+                  </button> */}
                 </div>
               ))}
             </div>
@@ -202,7 +202,7 @@ const Services = () => {
       )}
 
       {/* ================= BRANDS SECTION ================= */}
-      <section className="brands-section py-16 bg-gray-50">
+      {/* <section className="brands-section py-16 bg-gray-50">
         <div className="container mx-auto px-4">
           <div className="text-center mb-12">
             <h2 className="text-3xl md:text-4xl font-bold mb-2">
@@ -228,7 +228,9 @@ const Services = () => {
             ))}
           </div>
         </div>
-      </section>
+      </section> */}
+      <BrandsSection/>
+
     </div>
   )
 }

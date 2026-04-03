@@ -1,6 +1,6 @@
 // src/components/home/Hero.jsx
 import React, { useState, useEffect } from 'react'
-import { getAllCities, getAllServiceCategories, getAllServices } from '../../services/api'
+import { getAllCities, getAllServiceCategories, getFilteredServices } from '../../services/api'
 
 const Hero = ({ onSearch }) => {
   const [location, setLocation] = useState('')
@@ -91,7 +91,7 @@ const Hero = ({ onSearch }) => {
     
     try {
       // Get services with filters (backend will handle filtering)
-      const response = await getAllServices(location, service)
+      const response = await getFilteredServices(location, service)
       
       if (response.success && response.data && response.data.length > 0) {
         // Format results for display

@@ -18,6 +18,8 @@ const Navbar = () => {
 
   const handleLogout = () => {
     dispatch(logout())
+    localStorage.removeItem('product_cart') // ✅ Clear token from localStorage
+    // sessionStorage.removeItem('pendingProductAction') // ✅ Clear pending product action
     navigate('/login')
   }
 
@@ -27,7 +29,7 @@ const Navbar = () => {
 
   const navLinks = [
     { path: '/', label: 'Home' },
-    { path: '/shop', label: 'Shop' },
+    { path: '/products', label: 'Products' },
     { path: '/services', label: 'Services' },
     { path: '/partners', label: 'Partners' },
     // { path: '/social', label: 'Social Media' },

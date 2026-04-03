@@ -14,7 +14,7 @@ const Footer = () => {
             {/* <h5 className="text-primary text-2xl font-bold mb-2">Reparo ⚡</h5> */}
             {/* Logo */}
             <Link to="/" className="flex items-center">
-              <img src="/assets/logo/logo.png" alt="Reparo Logo" className="h-12 w-auto" />
+              <img src="/assets/icons/green-reparo-removebg-preview.png" alt="Reparo Logo" className="h-14 pb-4 w-auto" />
             </Link>
             <p className="text-sm text-gray-300 max-w-xs">
               Smart EV service marketplace for bikes & scooters.
