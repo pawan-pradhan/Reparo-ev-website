@@ -128,7 +128,7 @@ const ProductCart = () => {
             </button>
             
             <Link 
-              to="/shop" 
+              to="/products" 
               className="block w-full text-center text-primary mt-3 hover:underline"
             >
               ← Continue Shopping

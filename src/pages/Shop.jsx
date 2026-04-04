@@ -21,8 +21,8 @@ const Shop = () => {
         const formattedProducts = data.data.map(product => ({
           id: product._id,
           name: product.product_name || product.sku_code || 'Product',
-          price: product.sale_price_after_gst || product.sale_price || 0,
-          oldPrice: product.sale_price || 0,
+          price: product.sale_price || 0,
+          // oldPrice: product.sale_price || 0,
           image: product.image ? `https://reparo24.com/uploads/products/${product.image}` : '/assets/products/shop.png',
           description: product.description || 'High-quality product'
         }))
@@ -70,7 +70,10 @@ const Shop = () => {
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {products.map((product) => (
+          <>
+          alert(product?,sale_price);
           <ProductCard key={product.id} product={product} />
+          </>
         ))}
       </div>
     </div>

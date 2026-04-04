@@ -4,12 +4,16 @@ import { useNavigate } from 'react-router-dom'
 import { useSelector } from 'react-redux'
 import { useProductCart } from '../context/ProductCartContext'
 
+
+// ✅ LIVE RAZORPAY KEY from .env
+const RAZORPAY_KEY = import.meta.env.VITE_RAZORPAY_KEY_ID || 'rzp_live_SUYuHzHNwzbCJP'
+
 const ProductCheckout = () => {
   const navigate = useNavigate()
   const { isAuthenticated, user } = useSelector((state) => state.auth)
-  console.log("🚀 ~ ProductCheckout ~ isAuthenticated:", isAuthenticated)
   const { cartItems, getTotals, clearCart } = useProductCart()
   const [orderCreating, setOrderCreating] = useState(false)
+  const [razorpayLoaded, setRazorpayLoaded] = useState(false)
   
   const [address, setAddress] = useState({
     name: user?.name || '',
@@ -20,13 +24,38 @@ const ProductCheckout = () => {
     notes: ''
   })
   
-  const [paymentMethod, setPaymentMethod] = useState('COD') // COD or online
+  const [paymentMethod, setPaymentMethod] = useState('online')
 
   const { subtotal, gst, total } = getTotals()
 
+  // ✅ Load Razorpay Script
+  useEffect(() => {
+    const loadRazorpayScript = () => {
+      return new Promise((resolve) => {
+        if (window.Razorpay) {
+          setRazorpayLoaded(true)
+          resolve(true)
+          return
+        }
+        const script = document.createElement('script')
+        script.src = 'https://checkout.razorpay.com/v1/checkout.js'
+        script.onload = () => {
+          setRazorpayLoaded(true)
+          resolve(true)
+        }
+        script.onerror = () => {
+          console.error('Failed to load Razorpay script')
+          resolve(false)
+        }
+        document.body.appendChild(script)
+      })
+    }
+    loadRazorpayScript()
+  }, [])
+
   useEffect(() => {
     if (cartItems.length === 0) {
-      navigate('/shop')
+      navigate('/products')
     }
   }, [cartItems, navigate])
 
@@ -35,6 +64,130 @@ const ProductCheckout = () => {
       ...address,
       [e.target.name]: e.target.value
     })
+  }
+
+  // ✅ Function to send failed payment status to backend
+  const sendFailedPaymentStatus = async (orderId, order_id, reason) => {
+    try {
+      const token = localStorage.getItem('token')
+      const res = await fetch('https://reparo24.com/web/product_payment_checkout', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
+        },
+        body: JSON.stringify({
+          orderId: orderId,
+          order_id : order_id,
+          status: 'failed',
+          failure_reason: reason
+        })
+      })
+      const data = await res.json()
+      console.log('Failed Product Payment Status Sent:', data)
+    } catch (error) {
+      console.error('Error sending failed status:', error)
+    }
+  }
+
+  // ✅ Razorpay payment function for products with proper status handling
+  const openRazorpay = (orderData, razorpay_order_id) => {
+    return new Promise((resolve, reject) => {
+      const razorpayOrderId = razorpay_order_id
+      
+      if (!razorpayOrderId) {
+        console.error('No razorpay_order_id received:', orderData)
+        reject({ status: 'error', message: 'Payment initialization failed' })
+        return
+      }
+
+      if (!razorpayLoaded) {
+        reject({ status: 'error', message: 'Payment system loading. Please try again.' })
+        return
+      }
+
+      const options = {
+        key: RAZORPAY_KEY,
+        amount: Math.round(orderData.order_total_amount * 100),
+        currency: "INR",
+        name: "Reparo",
+        description: "Product Order Payment",
+        order_id: razorpayOrderId,
+        
+        // ✅ SUCCESS
+        handler: async function (response) {
+          console.log("✅ Payment Success:", response)
+          // resolve({ status: 'success', data: response, orderData: orderData })
+          razorpayOrderId, orderData._id
+          resolve({ status: 'success', data: orderData, orderId: razorpayOrderId })
+        },
+        
+        prefill: {
+          name: address.name,
+          contact: address.phone,
+          email: user?.email || ''
+        },
+        theme: { color: "#0b86d0" },
+        
+        // ✅ CANCELLED
+        modal: {
+          ondismiss: async function() {
+            console.log("❌ User cancelled payment")
+            await sendFailedPaymentStatus(razorpayOrderId, orderData._id, 'User cancelled payment')
+            reject({ status: 'cancelled', message: 'Payment cancelled by user', orderId: razorpayOrderId })
+          }
+        }
+      }
+
+      const rzp = new window.Razorpay(options)
+      
+      // ✅ FAILED
+      rzp.on('payment.failed', async function (response) {
+        console.error("❌ Payment Failed:", response.error)
+        await sendFailedPaymentStatus(orderData._id, response.error.description || 'Payment failed')
+        reject({ 
+          status: 'failed', 
+          message: response.error.description || 'Payment failed',
+          error: response.error,
+          orderId: orderData._id
+        })
+      })
+      
+      rzp.open()
+    })
+  }
+
+  const verifyProductPayment = async (paymentResponse, orderId) => {
+    try {
+      const token = localStorage.getItem('token')
+      const res = await fetch('https://reparo24.com/web/product_payment_checkout', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
+        },
+        body: JSON.stringify({
+          order_id: paymentResponse?._id,
+          orderId: orderId,
+          // razorpay_order_id: paymentResponse.razorpay_order_id,
+          // razorpay_payment_id: paymentResponse.razorpay_payment_id,
+          // razorpay_signature: paymentResponse.razorpay_signature,
+          status: 'success'
+        })
+      })
+
+      const data = await res.json()
+      console.log('Verify Payment Response:', data)
+
+      if (data.status === 200 || data.success) {
+        return true
+      } else {
+        throw new Error(data.message || 'Payment verification failed')
+      }
+    } catch (error) {
+      console.error('Verify Payment Error:', error)
+      throw error
+    }
   }
 
   const handleSubmitOrder = async (e) => {
@@ -64,13 +217,12 @@ const ProductCheckout = () => {
         return
       }
       
-      // ✅ Prepare order payload with product_name
       const orderPayload = {
         items: cartItems.map(item => ({
           product_id: item.id,
-          product_name: item.name, // ✅ ADD product_name
+          product_name: item.name,
           quantity: item.quantity,
-          amount: Math.round(item.price) // amount after GST
+          amount: Math.round(item.price)
         })),
         billing_address: {
           name: address.name,
@@ -99,17 +251,42 @@ const ProductCheckout = () => {
       console.log('Product Order Response:', data)
       
       if (data.success) {
-        clearCart()
-        
         if (paymentMethod === 'COD') {
+          clearCart()
           alert('Order placed successfully!')
           navigate('/dashboard/product-orders')
         } else {
-          // Online payment - Open Razorpay
-          if (data.razorpay_order_id) {
-            openRazorpay(data)
-          } else {
-            alert('Payment gateway not ready. Please try COD.')
+          // ✅ Online Payment
+          if (!razorpayLoaded) {
+            alert('Payment system is loading. Please wait and try again.')
+            setOrderCreating(false)
+            return
+          }
+          
+          try {
+            const paymentResult = await openRazorpay(data.data, data?.razorpay_order_id)
+            
+            if (paymentResult.status === 'success') {
+              const verified = await verifyProductPayment(paymentResult.data, data.data._id)
+              
+              if (verified) {
+                clearCart()
+                alert('✅ Payment successful! Order placed successfully.')
+                navigate('/dashboard/product-orders')
+              } else {
+                alert('Payment verification failed. Please contact support.')
+              }
+            }
+          } catch (paymentError) {
+            console.error('Payment Error:', paymentError)
+            
+            if (paymentError.status === 'cancelled') {
+              alert('❌ Payment was cancelled. You can try again.')
+            } else if (paymentError.status === 'failed') {
+              alert('❌ Payment failed. Please try again with different payment method.')
+            } else {
+              alert(paymentError.message || 'Payment failed. Please try again.')
+            }
           }
         }
       } else {
@@ -120,65 +297,6 @@ const ProductCheckout = () => {
       alert('Failed to create order. Please try again.')
     } finally {
       setOrderCreating(false)
-    }
-  }
-
-  // Razorpay payment function for products
-  const openRazorpay = (orderData) => {
-    const options = {
-      key: import.meta.env.VITE_RAZORPAY_KEY_ID,
-      amount: Math.round(orderData.order_total_amount * 100),
-      currency: "INR",
-      name: "Reparo",
-      description: "Product Order Payment",
-      order_id: orderData.razorpay_order_id,
-      handler: async function (response) {
-        console.log("Payment Success:", response)
-        await verifyProductPayment(response, orderData._id)
-      },
-      prefill: {
-        name: address.name,
-        contact: address.phone,
-        email: user?.email || ''
-      },
-      theme: {
-        color: "#0b86d0"
-      }
-    }
-
-    const rzp = new window.Razorpay(options)
-    rzp.open()
-  }
-
-  const verifyProductPayment = async (paymentResponse, orderId) => {
-    try {
-      const token = localStorage.getItem('token')
-      const res = await fetch('https://reparo24.com/web/product_payment_checkout', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${token}`
-        },
-        body: JSON.stringify({
-          order_id: orderId,
-          razorpay_order_id: paymentResponse.razorpay_order_id,
-          razorpay_payment_id: paymentResponse.razorpay_payment_id,
-          razorpay_signature: paymentResponse.razorpay_signature
-        })
-      })
-
-      const data = await res.json()
-      console.log('Verify Payment Response:', data)
-
-      if (data.status === 200 || data.success) {
-        alert('Payment successful! Order placed successfully.')
-        navigate('/dashboard/product-orders')
-      } else {
-        alert('Payment verification failed. Please contact support.')
-      }
-    } catch (error) {
-      console.error('Verify Payment Error:', error)
-      alert('Payment verification failed. Please contact support.')
     }
   }
 
@@ -275,17 +393,6 @@ const ProductCheckout = () => {
                 {/* PAYMENT METHOD */}
                 <h5 className="font-semibold text-lg mt-6 mb-3">Payment Method</h5>
                 <div className="payment-box space-y-3">
-                  {/* <label className="flex items-center gap-3 p-3 border rounded-lg cursor-pointer hover:bg-gray-50">
-                    <input
-                      type="radio"
-                      name="payment"
-                      value="COD"
-                      checked={paymentMethod === 'COD'}
-                      onChange={(e) => setPaymentMethod(e.target.value)}
-                      className="w-4 h-4 text-primary"
-                    />
-                    <span>Cash on Delivery</span>
-                  </label> */}
                   <label className="flex items-center gap-3 p-3 border rounded-lg cursor-pointer hover:bg-gray-50">
                     <input
                       type="radio"

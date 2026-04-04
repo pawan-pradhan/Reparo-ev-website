@@ -22,8 +22,8 @@ const ProductsSection = () => {
         const formattedProducts = data.data.slice(0, 6).map(product => ({
           id: product._id,
           name: product.product_name || product.sku_code || 'Product',
-          price: product.sale_price_after_gst || product.sale_price || 0,
-          oldPrice: product.sale_price || 0,
+          // price: product.sale_price_after_gst || product.sale_price || 0,
+          price: product.sale_price || 0,
           image: product.image ? `https://reparo24.com/uploads/products/${product.image}` : '/assets/products/shop.png',
           description: product.description || 'High-quality product'
         }))
