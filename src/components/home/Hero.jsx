@@ -141,7 +141,7 @@ const Hero = ({ onSearch }) => {
           data-aos="fade-up" 
           className="text-4xl md:text-6xl lg:text-7xl font-bold mb-6 text-white"
         >
-          Reparo – Powering EV Care ⚡
+          Reparo - Book Your Service ⚡
         </h1>
         <p 
           data-aos="fade-up" 
