@@ -104,7 +104,7 @@ const Checkout = () => {
         })
       })
       const data = await res.json()
-      console.log('Failed Payment Status Sent:', data)
+      // console.log('Failed Payment Status Sent:', data)
     } catch (error) {
       console.error('Error sending failed status:', error)
     }
@@ -116,7 +116,7 @@ const Checkout = () => {
       const razorpayOrderId = orderData.order_id
       
       if (!razorpayOrderId) {
-        console.error('No order_id received:', orderData)
+        // console.error('No order_id received:', orderData)
         reject({ status: 'error', message: 'Payment initialization failed' })
         return
       }
@@ -136,7 +136,7 @@ const Checkout = () => {
         
         // ✅ SUCCESS: Jab user payment karega
         handler: async function (response) {
-          console.log("✅ Payment Success:", response)
+          // console.log("✅ Payment Success:", response)
           resolve({ status: 'success', data: response, orderData: orderData })
         },
         
@@ -157,7 +157,7 @@ const Checkout = () => {
         // ✅ CANCELLED: Jab user close button press karega
         modal: {
           ondismiss: async function() {
-            console.log("❌ User cancelled payment")
+            // console.log("❌ User cancelled payment")
             // ✅ Send failed status to backend
             await sendFailedPaymentStatus(orderData.order_id, 'User cancelled payment')
             reject({ status: 'cancelled', message: 'Payment cancelled by user', orderId: orderData.order_id })
@@ -169,7 +169,7 @@ const Checkout = () => {
       
       // ✅ FAILED: Agar payment fail ho jaye
       rzp.on('payment.failed', async function (response) {
-        console.error("❌ Payment Failed:", response.error)
+        // console.error("❌ Payment Failed:", response.error)
         // ✅ Send failed status to backend
         await sendFailedPaymentStatus(orderData.order_id, response.error.description || 'Payment failed')
         reject({ 
@@ -204,7 +204,7 @@ const Checkout = () => {
       })
 
       const data = await res.json()
-      console.log('Verify Payment Response:', data)
+      // console.log('Verify Payment Response:', data)
 
       if (data.status === 200 || data.success) {
         return true
@@ -259,7 +259,7 @@ const Checkout = () => {
         payment_mode: paymentMethod
       }
       
-      console.log('Order Payload:', orderPayload)
+      // console.log('Order Payload:', orderPayload)
       
       const response = await fetch('https://reparo24.com/web/create_service_order', {
         method: 'POST',

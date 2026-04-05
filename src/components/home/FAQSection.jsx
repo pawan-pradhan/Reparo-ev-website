@@ -14,7 +14,7 @@ const FAQSection = () => {
     try {
       const response = await fetch('https://reparo24.com/web/api/get_all_faqs')
       const data = await response.json()
-      console.log('FAQs Response:', data)
+      // console.log('FAQs Response:', data)
       
       if (data.success && data.data) {
         setFaqs(data.data)

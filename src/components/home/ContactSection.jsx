@@ -61,7 +61,7 @@ const ContactSection = () => {
         }
       )
       
-      console.log('Response:', response.data)
+      // console.log('Response:', response.data)
       
       if (response.data.message === 'Thank you for contacting us!! We will get back to you soon.') {
         setSuccessMsg('✅ Message sent successfully! We will get back to you soon.')
@@ -80,7 +80,7 @@ const ContactSection = () => {
         setTimeout(() => setError(''), 4000)
       }
     } catch (error) {
-      console.error('Contact form error:', error)
+      // console.error('Contact form error:', error)
       if (error.response) {
         setError('❌ ' + (error.response.data?.message || 'Server error. Please try again.'))
       } else if (error.request) {
