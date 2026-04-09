@@ -52,7 +52,7 @@ const ContactSection = () => {
       formBody.append('message', formData.message)
       
       const response = await axios.post(
-        'https://reparo24.com/web/api/contactus',
+        'https://test.reparo24.com/web/api/contactus',
         formBody.toString(),
         {
           headers: {

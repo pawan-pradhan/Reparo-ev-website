@@ -53,6 +53,34 @@ const Services = () => {
     fetchServices()
   }, [])
 
+  // const fetchServices = async () => {
+  //   try {
+  //     setLoading(true)
+  //     const response = await getAllServices()
+  //     console.log('All Services Response:', response)
+      
+  //     if (response.success && response.data && response.data.length > 0) {
+  //       const formattedServices = response.data.map(service => ({
+  //         id: service._id,
+  //         serviceId: service._id,
+  //         title: service.title,
+  //         price: service.offer_price || service.price,
+  //         originalPrice: service.price,
+  //         description: service.features?.[0]?.title || 'Professional EV service',
+  //         features: service.features || [],
+  //         icon: getIconForService(service.title),
+  //         category: service.servicecategory_id?.name || 'Service',
+  //         image: service.image || '/assets/products/shop.png'
+  //       }))
+  //       setServices(formattedServices)
+  //     }
+  //   } catch (error) {
+  //     console.error('Error fetching services:', error)
+  //   } finally {
+  //     setLoading(false)
+  //   }
+  // }
+
   const fetchServices = async () => {
     try {
       setLoading(true)
@@ -60,18 +88,24 @@ const Services = () => {
       console.log('All Services Response:', response)
       
       if (response.success && response.data && response.data.length > 0) {
-        const formattedServices = response.data.map(service => ({
-          id: service._id,
-          serviceId: service._id,
-          title: service.title,
-          price: service.offer_price || service.price,
-          originalPrice: service.price,
-          description: service.features?.[0]?.title || 'Professional EV service',
-          features: service.features || [],
-          icon: getIconForService(service.title),
-          category: service.servicecategory_id?.name || 'Service',
-          image: service.image || '/assets/products/shop.png'
-        }))
+        const formattedServices = response.data.map(service => {
+          // ✅ Get model names from model_id array
+          const modelNames = service.model_id?.map(model => model.name).join(', ') || ''
+          
+          return {
+            id: service._id,
+            serviceId: service._id,
+            title: service.title,
+            price: service.offer_price || service.price,
+            originalPrice: service.price,
+            description: service.features?.[0]?.title || 'Professional EV service',
+            features: service.features || [],
+            icon: getIconForService(service.title),
+            category: service.servicecategory_id?.name || 'Service',
+            image: service.image || '/assets/products/shop.png',
+            model: modelNames  // ✅ Add model to service object
+          }
+        })
         setServices(formattedServices)
       }
     } catch (error) {
@@ -80,6 +114,7 @@ const Services = () => {
       setLoading(false)
     }
   }
+
 
   const getIconForService = (title) => {
     const titleLower = title?.toLowerCase() || ''
@@ -171,7 +206,7 @@ const Services = () => {
               </p>
             </div>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {services.map((service) => (
+              {/* {services.map((service) => (
                 <div
                   key={service.id}
                   className="bg-gray-50 rounded-xl shadow-md p-6 hover:shadow-lg transition-all duration-300 hover:-translate-y-1 border border-gray-100"
@@ -188,47 +223,40 @@ const Services = () => {
                   </div>
                   <p className="text-gray-500 text-sm mb-2">Starting from ₹{service.price}</p>
                   <p className="text-gray-400 text-xs mb-4 line-clamp-2">{service.description}</p>
-                  {/* <button
-                    onClick={() => handleBookNow(service)}
-                    className="w-full bg-gradient-to-r from-[#0b86d0] to-[#00c853] text-white py-2 rounded-lg font-semibold hover:opacity-90 transition"
-                  >
-                    ⚡ Book Now
-                  </button> */}
+                  
+                </div>
+              ))} */}
+              {services.map((service) => (
+                <div
+                  key={service.id}
+                  className="bg-gray-50 rounded-xl shadow-md p-6 hover:shadow-lg transition-all duration-300 hover:-translate-y-1 border border-gray-100"
+                >
+                  <div className="flex items-center gap-3 mb-3">
+                    <div className="w-12 h-12 rounded-full bg-gradient-to-r from-[#0b86d0] to-[#00c853] flex items-center justify-center text-white text-xl">
+                      <i className={`bi ${service.icon}`}></i>
+                    </div>
+                    <Link to={`/service/${service.serviceId}`} className="flex-1">
+                      <h5 className="text-lg font-semibold hover:text-primary transition-colors">
+                        {service.title}
+                      </h5>
+                    </Link>
+                  </div>
+                  
+                  {/* ✅ Display Model if available */}
+                  {service.model && (
+                    <p className="text-gray-500 text-xs mb-1">
+                      🚗 Model: {service.model}
+                    </p>
+                  )}
+                  
+                  <p className="text-gray-500 text-sm mb-2">Starting from ₹{service.price}</p>
+                  <p className="text-gray-400 text-xs mb-4 line-clamp-2">{service.description}</p>
                 </div>
               ))}
             </div>
           </div>
         </section>
       )}
-
-      {/* ================= BRANDS SECTION ================= */}
-      {/* <section className="brands-section py-16 bg-gray-50">
-        <div className="container mx-auto px-4">
-          <div className="text-center mb-12">
-            <h2 className="text-3xl md:text-4xl font-bold mb-2">
-              Popular EV Brands
-            </h2>
-            <p className="text-gray-500">
-              Certified & Supported by Reparo
-            </p>
-          </div>
-
-          <div className="flex flex-wrap justify-center gap-8">
-            {brands.map((brand, index) => (
-              <div
-                key={index}
-                className="bg-white rounded-lg p-4 shadow-md hover:shadow-lg transition-all duration-300 w-32 md:w-40"
-              >
-                <img 
-                  src={brand.logo} 
-                  alt={brand.name}
-                  className="w-full h-auto object-contain grayscale hover:grayscale-0 transition-all duration-300"
-                />
-              </div>
-            ))}
-          </div>
-        </div>
-      </section> */}
       <BrandsSection/>
 
     </div>

@@ -14,13 +14,13 @@ const Shop = () => {
   const fetchProducts = async () => {
     try {
       setLoading(true)
-      const response = await fetch('https://reparo24.com/web/api/get_all_products')
+      const response = await fetch('https://test.reparo24.com/web/api/get_all_products')
       const data = await response.json()
       console.log('All Products Response:', data)
       
       if (data.success && data.data && data.data.length > 0) {
         // ✅ Get stock image URL from response
-        const baseImageUrl = data.stock_image_url || 'https://reparo24.com/uploads/stock/'
+        const baseImageUrl = data.stock_image_url || 'https://test.reparo24.com/uploads/stock/'
         setStockImageUrl(baseImageUrl)
         
         const formattedProducts = data.data.map(product => ({
@@ -106,7 +106,7 @@ export default Shop
 //   const fetchProducts = async () => {
 //     try {
 //       setLoading(true)
-//       const response = await fetch('https://reparo24.com/web/api/get_all_products')
+//       const response = await fetch('https://test.reparo24.com/web/api/get_all_products')
 //       const data = await response.json()
 //       console.log('All Products Response:', data)
       
@@ -118,9 +118,9 @@ export default Shop
 //           if (product.images) {
 //             // Try different possible image paths
 //             const possiblePaths = [
-//               `https://reparo24.com//uploads/stock/${product.images[0]}`,
-//               // `https://reparo24.com/uploads/${product.image}`,
-//               // `https://reparo24.com/assets/products/${product.image}`,
+//               `https://test.reparo24.com//uploads/stock/${product.images[0]}`,
+//               // `https://test.reparo24.com/uploads/${product.image}`,
+//               // `https://test.reparo24.com/assets/products/${product.image}`,
 //               // `/assets/products/${product.image}`
 //             ]
             
@@ -131,7 +131,7 @@ export default Shop
           
 //           // ✅ Also check if product has images array
 //           if (product.images && product.images.length > 0) {
-//             imageUrl = `https://reparo24.com//uploads/stock/${product.images[0]}`
+//             imageUrl = `https://test.reparo24.com//uploads/stock/${product.images[0]}`
 //             // alert(imageUrl)
 //           }
           
@@ -212,7 +212,7 @@ export default Shop
 //   const fetchProducts = async () => {
 //     try {
 //       setLoading(true)
-//       const response = await fetch('https://reparo24.com/web/api/get_all_products')
+//       const response = await fetch('https://test.reparo24.com/web/api/get_all_products')
 //       const data = await response.json()
 //       console.log('All Products Response:', data)
       
@@ -222,7 +222,7 @@ export default Shop
 //           name: product.product_name || product.sku_code || 'Product',
 //           price: product.sale_price || 0,
 //           // oldPrice: product.sale_price || 0,
-//           image: product.image ? `https://reparo24.com/uploads/products/${product.image}` : '/assets/products/shop.png',
+//           image: product.image ? `https://test.reparo24.com/uploads/products/${product.image}` : '/assets/products/shop.png',
 //           description: product.description || 'High-quality product'
 //         }))
 //         setProducts(formattedProducts)

@@ -24,9 +24,9 @@ const TrackOrder = () => {
       
       let url = ''
       if (type === 'service') {
-        url = 'https://reparo24.com/web/track_service_order_status'
+        url = 'https://test.reparo24.com/web/track_service_order_status'
       } else {
-        url = 'https://reparo24.com/web/track_product_order_status'
+        url = 'https://test.reparo24.com/web/track_product_order_status'
       }
       
       const formData = new URLSearchParams()
@@ -385,9 +385,9 @@ export default TrackOrder
       
 //       let url = ''
 //       if (type === 'service') {
-//         url = 'https://reparo24.com/web/track_service_order_status'
+//         url = 'https://test.reparo24.com/web/track_service_order_status'
 //       } else {
-//         url = 'https://reparo24.com/web/track_product_order_status'
+//         url = 'https://test.reparo24.com/web/track_product_order_status'
 //       }
       
 //       const formData = new URLSearchParams()
@@ -738,9 +738,9 @@ export default TrackOrder
       
 //       let url = ''
 //       if (type === 'service') {
-//         url = 'https://reparo24.com/web/track_service_order_status'
+//         url = 'https://test.reparo24.com/web/track_service_order_status'
 //       } else {
-//         url = 'https://reparo24.com/web/track_product_order_status'
+//         url = 'https://test.reparo24.com/web/track_product_order_status'
 //       }
       
 //       const formData = new URLSearchParams()

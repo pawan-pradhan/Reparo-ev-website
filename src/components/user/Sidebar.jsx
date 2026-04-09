@@ -25,7 +25,7 @@ const Sidebar = ({ isOpen, onClose }) => {
     { path: '/dashboard', icon: '🎯', label: 'Dashboard', end: true },
     { path: '/dashboard/service-orders', icon: '🔧', label: 'Service Orders', end: false },
     { path: '/dashboard/product-orders', icon: '🛍️', label: 'Product Orders', end: false },
-    // { path: '/dashboard/notifications', icon: '🔔', label: 'Notifications', end: false },
+    { path: '/dashboard/notifications', icon: '🔔', label: 'Notifications', end: false },
     { path: '/dashboard/profile', icon: '👤', label: 'Profile', end: false },
     { path: '/dashboard/support', icon: '🎫', label: 'Support', end: false },
   ]

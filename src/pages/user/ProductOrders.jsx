@@ -19,7 +19,7 @@ const ProductOrders = () => {
       setLoading(true)
       const token = localStorage.getItem('token')
       
-      const response = await fetch('https://reparo24.com/web/get_product_orderItems', {
+      const response = await fetch('https://test.reparo24.com/web/get_product_orderItems', {
         method: 'GET',
         headers: {
           'Authorization': `Bearer ${token}`,
@@ -131,7 +131,7 @@ const ProductOrders = () => {
     try {
       const token = localStorage.getItem('token')
       
-      const response = await fetch(`https://reparo24.com/web/download_product_invoice?_id=${orderId}`, {
+      const response = await fetch(`https://test.reparo24.com/web/download_product_invoice?_id=${orderId}`, {
         method: 'GET',
         headers: {
           'Authorization': `Bearer ${token}`,
@@ -305,7 +305,7 @@ export default ProductOrders
 //   //     setLoading(true)
 //   //     const token = localStorage.getItem('token')
       
-//   //     const response = await fetch('https://reparo24.com/web/get_product_order', {
+//   //     const response = await fetch('https://test.reparo24.com/web/get_product_order', {
 //   //       method: 'GET',
 //   //       headers: {
 //   //         'Authorization': `Bearer ${token}`,
@@ -353,7 +353,7 @@ export default ProductOrders
 //       const token = localStorage.getItem('token')
       
 //       // ✅ Use get_product_orderItems API
-//       const response = await fetch('https://reparo24.com/web/get_product_orderItems', {
+//       const response = await fetch('https://test.reparo24.com/web/get_product_orderItems', {
 //         method: 'GET',
 //         headers: {
 //           'Authorization': `Bearer ${token}`,
@@ -469,7 +469,7 @@ export default ProductOrders
 //   //   try {
 //   //     const token = localStorage.getItem('token')
       
-//   //     const response = await fetch(`https://reparo24.com/web/download_product_invoice?_id=${orderId}`, {
+//   //     const response = await fetch(`https://test.reparo24.com/web/download_product_invoice?_id=${orderId}`, {
 //   //       method: 'GET',
 //   //       headers: {
 //   //         'Authorization': `Bearer ${token}`,
@@ -503,7 +503,7 @@ export default ProductOrders
 //     try {
 //       const token = localStorage.getItem('token')
       
-//       const response = await fetch(`https://reparo24.com/web/download_product_invoice?_id=${orderId}`, {
+//       const response = await fetch(`https://test.reparo24.com/web/download_product_invoice?_id=${orderId}`, {
 //         method: 'GET',
 //         headers: {
 //           'Authorization': `Bearer ${token}`,

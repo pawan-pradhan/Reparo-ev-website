@@ -1,7 +1,7 @@
 // src/services/api.js
 import axios from 'axios'
 
-const API_BASE_URL = 'https://reparo24.com'
+const API_BASE_URL = 'https://test.reparo24.com'
 
 const api = axios.create({
   baseURL: API_BASE_URL,
@@ -449,21 +449,44 @@ export const removeFromCartAPI = removeCartItem
 
 // ==================== SERVICES APIs ====================
 
-export const getFilteredServices = async (cityId = '', categoryId = '') => {
+// export const getFilteredServices = async (cityId = '', categoryId = '') => {
+//   try {
+//     // Build query params
+//     const params = new URLSearchParams()
+//     if (cityId) params.append('city_id', cityId)
+//     if (categoryId) params.append('servicecategory_id', categoryId)
+    
+//     const queryString = params.toString()
+//     const url = `/web/api/get_filtered_services${queryString ? `?${queryString}` : ''}`
+    
+//     const response = await api.get(url)
+//     console.log('Services API Response:', response.data)
+//     return response.data
+//   } catch (error) {
+//     console.error('Get Services Error:', error)
+//     throw error.response?.data || { message: 'Failed to load services' }
+//   }
+// }
+
+
+// src/services/api.js - Update getFilteredServices function
+
+export const getFilteredServices = async (cityId = '', categoryId = '', modelId = '') => {
   try {
     // Build query params
     const params = new URLSearchParams()
     if (cityId) params.append('city_id', cityId)
     if (categoryId) params.append('servicecategory_id', categoryId)
+    if (modelId) params.append('model_id', modelId)
     
     const queryString = params.toString()
     const url = `/web/api/get_filtered_services${queryString ? `?${queryString}` : ''}`
     
     const response = await api.get(url)
-    console.log('Services API Response:', response.data)
+    console.log('Filtered Services API Response:', response.data)
     return response.data
   } catch (error) {
-    console.error('Get Services Error:', error)
+    console.error('Get Filtered Services Error:', error)
     throw error.response?.data || { message: 'Failed to load services' }
   }
 }
@@ -485,6 +508,21 @@ export const getAllServices = async (cityId = '', categoryId = '') => {
   } catch (error) {
     console.error('Get Services Error:', error)
     throw error.response?.data || { message: 'Failed to load services' }
+  }
+}
+
+
+// src/services/api.js - Add this function
+
+// ==================== MODELS APIs ====================
+
+export const getAllModels = async () => {
+  try {
+    const response = await api.get('/web/api/get_all_models')
+    return response.data
+  } catch (error) {
+    console.error('Get Models Error:', error)
+    throw error.response?.data || { message: 'Failed to load models' }
   }
 }
 

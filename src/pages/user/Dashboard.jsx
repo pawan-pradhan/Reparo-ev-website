@@ -25,7 +25,7 @@ const Dashboard = () => {
       const token = localStorage.getItem('token')
       
       // ✅ Fetch Dashboard Stats
-      const statsResponse = await fetch('https://reparo24.com/web/api/get_dashboard-data', {
+      const statsResponse = await fetch('https://test.reparo24.com/web/api/get_dashboard-data', {
         method: 'GET',
         headers: {
           'Authorization': `Bearer ${token}`,
@@ -44,7 +44,7 @@ const Dashboard = () => {
       }
       
       // ✅ Fetch Service Orders (last 5)
-      const serviceResponse = await fetch('https://reparo24.com/web/get_service_order', {
+      const serviceResponse = await fetch('https://test.reparo24.com/web/get_service_order', {
         method: 'GET',
         headers: {
           'Authorization': `Bearer ${token}`,
@@ -68,7 +68,7 @@ const Dashboard = () => {
       }
       
       // ✅ Fetch Product Orders (last 5)
-      const productResponse = await fetch('https://reparo24.com/web/get_product_orderItems', {
+      const productResponse = await fetch('https://test.reparo24.com/web/get_product_orderItems', {
         method: 'GET',
         headers: {
           'Authorization': `Bearer ${token}`,

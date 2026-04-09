@@ -70,7 +70,7 @@ const ProductCheckout = () => {
   const sendFailedPaymentStatus = async (orderId, order_id, reason) => {
     try {
       const token = localStorage.getItem('token')
-      const res = await fetch('https://reparo24.com/web/product_payment_checkout', {
+      const res = await fetch('https://test.reparo24.com/web/product_payment_checkout', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -160,7 +160,7 @@ const ProductCheckout = () => {
   const verifyProductPayment = async (paymentResponse, orderId) => {
     try {
       const token = localStorage.getItem('token')
-      const res = await fetch('https://reparo24.com/web/product_payment_checkout', {
+      const res = await fetch('https://test.reparo24.com/web/product_payment_checkout', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -238,7 +238,7 @@ const ProductCheckout = () => {
       
       console.log('Product Order Payload:', orderPayload)
       
-      const response = await fetch('https://reparo24.com/web/create_product_order', {
+      const response = await fetch('https://test.reparo24.com/web/create_product_order', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

@@ -19,6 +19,39 @@ const ServiceDetails = () => {
     fetchServiceDetails()
   }, [id])
 
+  // const fetchServiceDetails = async () => {
+  //   try {
+  //     setLoading(true)
+  //     const response = await getAllServices()
+  //     console.log('Service Details Response:', response)
+      
+  //     if (response.success && response.data) {
+  //       const foundService = response.data.find(s => s._id === id)
+        
+  //       if (foundService) {
+  //         setService({
+  //           id: foundService._id,
+  //           serviceId: foundService._id,
+  //           name: foundService.title,
+  //           price: foundService.offer_price || foundService.price,
+  //           originalPrice: foundService.price,
+  //           description: foundService.features?.[0]?.title || 'Complete EV service with advanced diagnostics, professional repair, and quality assurance. Fast doorstep service.',
+  //           features: foundService.features || [],
+  //           image: foundService.image || '/assets/products/shop.png',
+  //           category: foundService.servicecategory_id?.name || 'Service'
+  //         })
+  //       } else {
+  //         navigate('/services')
+  //       }
+  //     }
+  //   } catch (error) {
+  //     console.error('Error fetching service:', error)
+  //     navigate('/services')
+  //   } finally {
+  //     setLoading(false)
+  //   }
+  // }
+
   const fetchServiceDetails = async () => {
     try {
       setLoading(true)
@@ -29,6 +62,9 @@ const ServiceDetails = () => {
         const foundService = response.data.find(s => s._id === id)
         
         if (foundService) {
+          // ✅ Get model names from model_id array
+          const modelNames = foundService.model_id?.map(model => model.name).join(', ') || ''
+          
           setService({
             id: foundService._id,
             serviceId: foundService._id,
@@ -38,7 +74,8 @@ const ServiceDetails = () => {
             description: foundService.features?.[0]?.title || 'Complete EV service with advanced diagnostics, professional repair, and quality assurance. Fast doorstep service.',
             features: foundService.features || [],
             image: foundService.image || '/assets/products/shop.png',
-            category: foundService.servicecategory_id?.name || 'Service'
+            category: foundService.servicecategory_id?.name || 'Service',
+            model: modelNames  // ✅ Add model to service object
           })
         } else {
           navigate('/services')
@@ -51,6 +88,7 @@ const ServiceDetails = () => {
       setLoading(false)
     }
   }
+
 
   const handleQuantityChange = (delta) => {
     const newQuantity = quantity + delta
@@ -121,10 +159,36 @@ const ServiceDetails = () => {
           </div>
 
           {/* RIGHT: DETAILS SECTION */}
+          {/* <div className="lg:w-1/2">
+            <h2 className="text-2xl md:text-3xl font-bold mb-2">
+              {service.name} ⚡
+            </h2>
+
+            <div className="price-box mb-3">
+              <span className="new-price text-2xl font-bold text-primary">₹{service.price}</span>
+              {service.originalPrice && service.originalPrice > service.price && (
+                <>
+                  <span className="old-price text-gray-400 line-through text-lg ml-2">₹{service.originalPrice}</span>
+                  <span className="off bg-red-500 text-white text-xs px-2 py-1 rounded ml-2">{discountPercent}% OFF</span>
+                </>
+              )}
+            </div>
+
+            <p className="text-gray-500 mb-4">
+              {service.description}
+            </p>
+          </div> */}
           <div className="lg:w-1/2">
             <h2 className="text-2xl md:text-3xl font-bold mb-2">
               {service.name} ⚡
             </h2>
+
+            {/* ✅ Display Model if available */}
+            {service.model && (
+              <p className="text-gray-500 text-sm mb-2">
+                🚗 Compatible Model: {service.model}
+              </p>
+            )}
 
             {/* PRICE */}
             <div className="price-box mb-3">
@@ -141,59 +205,6 @@ const ServiceDetails = () => {
             <p className="text-gray-500 mb-4">
               {service.description}
             </p>
-
-            {/* FEATURES */}
-            {/* <ul className="features list-none p-0 mb-4">
-              {service.features && service.features.length > 0 ? (
-                service.features.map((feature, idx) => (
-                  <li key={idx} className="flex items-center gap-2 text-gray-700 mb-2">
-                    <span className="text-primary">✔</span> {feature.title}
-                  </li>
-                ))
-              ) : (
-                <>
-                  <li className="flex items-center gap-2 text-gray-700 mb-2">
-                    <span className="text-primary">✔</span> Professional Service
-                  </li>
-                  <li className="flex items-center gap-2 text-gray-700 mb-2">
-                    <span className="text-primary">✔</span> Quality Assurance
-                  </li>
-                  <li className="flex items-center gap-2 text-gray-700 mb-2">
-                    <span className="text-primary">✔</span> Doorstep Service
-                  </li>
-                  <li className="flex items-center gap-2 text-gray-700 mb-2">
-                    <span className="text-primary">✔</span> 7 Days Warranty
-                  </li>
-                </>
-              )}
-            </ul> */}
-
-            {/* QTY BOX */}
-            {/* <div className="qty-box flex items-center gap-3 mt-3">
-              <button 
-                onClick={() => handleQuantityChange(-1)}
-                className="w-8 h-8 rounded-full border border-gray-300 hover:border-primary hover:text-primary transition flex items-center justify-center"
-              >
-                -
-              </button>
-              <span className="text-lg font-semibold w-8 text-center">{quantity}</span>
-              <button 
-                onClick={() => handleQuantityChange(1)}
-                className="w-8 h-8 rounded-full border border-gray-300 hover:border-primary hover:text-primary transition flex items-center justify-center"
-              >
-                +
-              </button>
-            </div> */}
-
-            {/* BUTTONS - Only Book Now */}
-            {/* <div className="flex gap-3 mt-4">
-              <button
-                onClick={handleBookNow}
-                className="flex-1 gradient-animated text-white py-2 rounded-lg font-semibold hover:opacity-90 transition"
-              >
-                ⚡ Book Now
-              </button>
-            </div> */}
           </div>
         </div>
 

@@ -97,16 +97,6 @@ const cartSlice = createSlice({
 export const { setCartItems, addToCart, removeFromCart, updateQuantity, clearCart } = cartSlice.actions
 export default cartSlice.reducer
 
-
-
-
-
-
-
-
-
-// import { createSlice } from '@reduxjs/toolkit'
-
 // const loadCartFromStorage = () => {
 //   try {
 //     const savedCart = localStorage.getItem('cart')
