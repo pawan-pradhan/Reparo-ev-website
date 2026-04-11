@@ -257,7 +257,7 @@ const ProductOrders = () => {
                       </span>
                       <div className="flex gap-4">
                         <Link
-                          to={`/dashboard/track-order/${order.orderId || order.id}?type=product`}
+                          to={`/dashboard/track-order/${order.id}?type=product`}
                           className="text-[#0b86d0] text-sm hover:underline"
                         >
                           Track

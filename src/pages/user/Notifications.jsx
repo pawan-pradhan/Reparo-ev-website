@@ -17,7 +17,7 @@ const Notifications = () => {
       setLoading(true)
       const token = localStorage.getItem('token')
       
-      const response = await fetch('https://test.reparo24.com/web/get_unread_notifications', {
+      const response = await fetch('https://test.reparo24.com/web/get_notification', {
         method: 'GET',
         headers: {
           'Authorization': `Bearer ${token}`,

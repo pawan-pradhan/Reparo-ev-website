@@ -168,6 +168,25 @@ const Home = () => {
       <StatsSection />
       <BookingProcess />
       <FAQSection />
+      <section className="py-16 bg-gradient-to-r from-[#0b86d0] to-[#00c853] text-white mb-6 ">
+        <div className="container mx-auto px-4 text-center">
+          <h1 className="text-4xl md:text-5xl font-bold mb-4">
+            Become a Reparo Partner ⚡
+          </h1>
+          <p className="text-lg text-white/90 mb-6">
+            Join India's Fast Growing EV Service Network
+          </p>
+          {/* <button className="bg-white text-[#0b86d0] px-8 py-3 rounded-lg font-semibold hover:shadow-lg transition">
+            Start Registration
+          </button> */}
+          <button
+            onClick={() => window.open("http://forms.gle/2RVerPAQwj2ehBYQ9", "_blank")}
+            className="bg-white text-[#0b86d0] px-8 py-3 rounded-lg font-semibold hover:shadow-lg transition"
+          >
+            Become a Partner Now
+          </button>
+        </div>
+      </section>
       <ContactSection />
     </div>
   )
