@@ -11,7 +11,7 @@ const PrivacyPolicy = () => {
 
   const fetchPrivacyPolicy = async () => {
     try {
-      const response = await fetch('https://test.reparo24.com/web/api/get_privacy_policy')
+      const response = await fetch('https://reparo24.com/web/api/get_privacy_policy')
       const data = await response.json()
       console.log('Privacy Policy Response:', data)
       

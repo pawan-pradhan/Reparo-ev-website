@@ -11,7 +11,7 @@ const TermsConditions = () => {
 
   const fetchTermsConditions = async () => {
     try {
-      const response = await fetch('https://test.reparo24.com/web/api/get_terms_condition')
+      const response = await fetch('https://reparo24.com/web/api/get_terms_condition')
       const data = await response.json()
       console.log('Terms Conditions Response:', data)
       

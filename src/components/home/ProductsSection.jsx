@@ -14,7 +14,7 @@ const ProductsSection = () => {
   const fetchProducts = async () => {
     try {
       setLoading(true)
-      const response = await fetch('https://test.reparo24.com/web/api/get_all_products')
+      const response = await fetch('https://reparo24.com/web/api/get_all_products')
       const data = await response.json()
       console.log('Products Response:', data)
       

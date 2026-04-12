@@ -1,7 +1,7 @@
 // src/services/api.js
 import axios from 'axios'
 
-const API_BASE_URL = 'https://test.reparo24.com'
+const API_BASE_URL = 'https://reparo24.com'
 
 const api = axios.create({
   baseURL: API_BASE_URL,

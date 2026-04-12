@@ -22,7 +22,7 @@ const ProductDetails = () => {
   const fetchProductDetails = async () => {
     try {
       setLoading(true)
-      const response = await fetch('https://test.reparo24.com/web/api/get_all_products')
+      const response = await fetch('https://reparo24.com/web/api/get_all_products')
       const data = await response.json()
       console.log('Product Details Response:', data)
       
@@ -36,7 +36,7 @@ const ProductDetails = () => {
           
           const productImages = foundProduct.images && foundProduct.images.length > 0
             ? foundProduct.images.map(img => {
-                const baseUrl = data.stock_image_url || 'https://test.reparo24.com/uploads/stock/'
+                const baseUrl = data.stock_image_url || 'https://reparo24.com/uploads/stock/'
                 const cleanBaseUrl = baseUrl.replace('//uploads', '/uploads')
                 return `${cleanBaseUrl}${img}`
               })
@@ -407,7 +407,7 @@ export default ProductDetails
 //   const fetchProductDetails = async () => {
 //     try {
 //       setLoading(true)
-//       const response = await fetch('https://test.reparo24.com/web/api/get_all_products')
+//       const response = await fetch('https://reparo24.com/web/api/get_all_products')
 //       const data = await response.json()
 //       console.log('Product Details Response:', data)
       
@@ -421,7 +421,7 @@ export default ProductDetails
           
 //           const productImages = foundProduct.images && foundProduct.images.length > 0
 //             ? foundProduct.images.map(img => {
-//                 const baseUrl = data.stock_image_url || 'https://test.reparo24.com/uploads/stock/'
+//                 const baseUrl = data.stock_image_url || 'https://reparo24.com/uploads/stock/'
 //                 const cleanBaseUrl = baseUrl.replace('//uploads', '/uploads')
 //                 return `${cleanBaseUrl}${img}`
 //               })
@@ -767,7 +767,7 @@ export default ProductDetails
 //   const fetchProductDetails = async () => {
 //     try {
 //       setLoading(true)
-//       const response = await fetch('https://test.reparo24.com/web/api/get_all_products')
+//       const response = await fetch('https://reparo24.com/web/api/get_all_products')
 //       const data = await response.json()
 //       console.log('Product Details Response:', data)
       
@@ -782,13 +782,13 @@ export default ProductDetails
           
 //           // Get all images from the product's images array
 //           // const productImages = foundProduct.images && foundProduct.images.length > 0
-//           //   ? foundProduct.images.map(img => `${data.stock_image_url || 'https://test.reparo24.com//uploads/stock/'}${img}`)
+//           //   ? foundProduct.images.map(img => `${data.stock_image_url || 'https://reparo24.com//uploads/stock/'}${img}`)
 //           //   : ['/assets/products/shop.png']
 
 //             const productImages = foundProduct.images && foundProduct.images.length > 0
 //         ? foundProduct.images.map(img => {
 //             // ✅ Fix double slash issue
-//             const baseUrl = data.stock_image_url || 'https://test.reparo24.com/uploads/stock/'
+//             const baseUrl = data.stock_image_url || 'https://reparo24.com/uploads/stock/'
 //             const cleanBaseUrl = baseUrl.replace('//uploads', '/uploads')
 //             return `${cleanBaseUrl}${img}`
 //           })

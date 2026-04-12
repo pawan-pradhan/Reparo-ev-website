@@ -219,7 +219,7 @@ const OtpVerification = () => {
         }
       }
       
-      const resendResponse = await fetch('https://test.reparo24.com/web/user/resend_otp', {
+      const resendResponse = await fetch('https://reparo24.com/web/user/resend_otp', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/x-www-form-urlencoded',

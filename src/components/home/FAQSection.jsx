@@ -12,7 +12,7 @@ const FAQSection = () => {
 
   const fetchFAQs = async () => {
     try {
-      const response = await fetch('https://test.reparo24.com/web/api/get_all_faqs')
+      const response = await fetch('https://reparo24.com/web/api/get_all_faqs')
       const data = await response.json()
       // console.log('FAQs Response:', data)
       

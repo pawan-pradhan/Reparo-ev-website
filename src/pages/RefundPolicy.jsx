@@ -11,7 +11,7 @@ const RefundPolicy = () => {
 
   const fetchRefundPolicy = async () => {
     try {
-      const response = await fetch('https://test.reparo24.com/web/api/get_refund_policy')
+      const response = await fetch('https://reparo24.com/web/api/get_refund_policy')
       const data = await response.json()
       console.log('Refund Policy Response:', data)
       

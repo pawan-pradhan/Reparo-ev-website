@@ -104,40 +104,92 @@ const TrackOrder = () => {
   }
 
   // Timeline steps - cancel step always visible (gray normally, red if cancelled)
-  const getTimelineSteps = () => {
-    const currentStatus = order?.order_status?.toLowerCase()
-    const isFullyCancelled = currentStatus === 'order_cancelled'
+  // const getTimelineSteps = () => {
+  //   const currentStatus = order?.order_status?.toLowerCase()
+  //   const isFullyCancelled = currentStatus === 'order_cancelled'
+  //   const isCompleted = currentStatus === 'order_completed'
+
     
-    let allSteps = []
+  //   let allSteps = []
     
-    if (type === 'service') {
-      // Service timeline steps
-      allSteps = ['order_ongoing', 'order_success', 'order_assigned', 'order_completed', 'order_cancelled']
-    } else {
-      // Product timeline steps
-      allSteps = ['order_ongoing', 'order_success', 'order_completed', 'order_cancelled']
-    }
+  //   if (type === 'service') {
+  //     // Service timeline steps
+  //     allSteps = ['order_ongoing', 'order_success', 'order_assigned', 'order_completed', 'order_cancelled']
+  //   } else {
+  //     // Product timeline steps
+  //     allSteps = ['order_ongoing', 'order_success', 'order_completed', 'order_cancelled']
+  //   }
     
-    // If fully cancelled, all steps should be red (cancelled)
-    if (isFullyCancelled) {
-      return allSteps.map(stepKey => ({
-        label: getStepLabel(stepKey),
-        statusKey: stepKey,
-        status: 'cancelled'
-      }))
-    }
+  //   // If fully cancelled, all steps should be red (cancelled)
+  //   if (isFullyCancelled) {
+  //     return allSteps.map(stepKey => ({
+  //       label: getStepLabel(stepKey),
+  //       statusKey: stepKey,
+  //       status: 'cancelled'
+  //     }))
+  //   }
     
-    // Otherwise, determine based on current status
+  //   // Otherwise, determine based on current status
+  //   const currentIndex = allSteps.indexOf(currentStatus)
+    
+  //   return allSteps.map(stepKey => {
+  //     const stepIndex = allSteps.indexOf(stepKey)
+      
+  //     // Cancel step is always at the end
+  //     if (stepKey === 'order_cancelled') {
+  //       // Cancel step always gray, unless order is cancelled
+  //       return { label: getStepLabel(stepKey), statusKey: stepKey, status: 'pending' }
+  //     }
+      
+  //     if (stepIndex < currentIndex) {
+  //       return { label: getStepLabel(stepKey), statusKey: stepKey, status: 'completed' }
+  //     } else if (stepIndex === currentIndex) {
+  //       return { label: getStepLabel(stepKey), statusKey: stepKey, status: 'active' }
+  //     } else {
+  //       return { label: getStepLabel(stepKey), statusKey: stepKey, status: 'pending' }
+  //     }
+  //   })
+  // }
+
+
+  // Timeline steps - cancel step only visible when status is NOT completed
+// Timeline steps - cancel step visible in all cases
+const getTimelineSteps = () => {
+  const currentStatus = order?.order_status?.toLowerCase()
+  const isFullyCancelled = currentStatus === 'order_cancelled'
+  const isCompleted = currentStatus === 'order_completed'
+  
+  let allSteps = []
+  
+  if (type === 'service') {
+    // Service timeline steps
+    allSteps = ['order_ongoing', 'order_success', 'order_assigned', 'order_completed']
+  } else {
+    // Product timeline steps
+    allSteps = ['order_ongoing', 'order_success', 'order_completed']
+  }
+  
+  // If fully cancelled, show main steps as cancelled + cancel step as cancelled
+  if (isFullyCancelled) {
+    const cancelledMainSteps = allSteps.map(stepKey => ({
+      label: getStepLabel(stepKey),
+      statusKey: stepKey,
+      status: 'cancelled'
+    }))
+    
+    // Add cancel step at the end as cancelled (red)
+    return [
+      ...cancelledMainSteps,
+      { label: 'Order Cancelled', statusKey: 'order_cancelled', status: 'cancelled' }
+    ]
+  }
+  
+  // If order is completed, show only main steps (NO cancel step)
+  if (isCompleted) {
     const currentIndex = allSteps.indexOf(currentStatus)
     
     return allSteps.map(stepKey => {
       const stepIndex = allSteps.indexOf(stepKey)
-      
-      // Cancel step is always at the end
-      if (stepKey === 'order_cancelled') {
-        // Cancel step always gray, unless order is cancelled
-        return { label: getStepLabel(stepKey), statusKey: stepKey, status: 'pending' }
-      }
       
       if (stepIndex < currentIndex) {
         return { label: getStepLabel(stepKey), statusKey: stepKey, status: 'completed' }
@@ -148,6 +200,28 @@ const TrackOrder = () => {
       }
     })
   }
+  
+  // Otherwise (ongoing, success, assigned), show main steps + cancel step (gray)
+  const currentIndex = allSteps.indexOf(currentStatus)
+  
+  const mainSteps = allSteps.map(stepKey => {
+    const stepIndex = allSteps.indexOf(stepKey)
+    
+    if (stepIndex < currentIndex) {
+      return { label: getStepLabel(stepKey), statusKey: stepKey, status: 'completed' }
+    } else if (stepIndex === currentIndex) {
+      return { label: getStepLabel(stepKey), statusKey: stepKey, status: 'active' }
+    } else {
+      return { label: getStepLabel(stepKey), statusKey: stepKey, status: 'pending' }
+    }
+  })
+  
+  // Add cancel step at the end (always gray)
+  return [
+    ...mainSteps,
+    { label: 'Order Cancelled', statusKey: 'order_cancelled', status: 'pending' }
+  ]
+}
 
   if (loading) {
     return (
@@ -309,12 +383,12 @@ const TrackOrder = () => {
                         }`}>
                           {step.label}
                         </h6>
-                        <p className="text-sm text-gray-400 mt-1">
+                        {/* <p className="text-sm text-gray-400 mt-1">
                           {isCancelledStatus ? 'Cancelled' : 
                            isCompleted ? 'Completed' : 
                            isActive ? 'Completed' : 
                            'Pending'}
-                        </p>
+                        </p> */}
                       </div>
                     </div>
                   )
@@ -356,9 +430,9 @@ export default TrackOrder
       
 //       let url = ''
 //       if (type === 'service') {
-//         url = 'https://test.reparo24.com/web/track_service_order_status'
+//         url = 'https://reparo24.com/web/track_service_order_status'
 //       } else {
-//         url = 'https://test.reparo24.com/web/track_product_order_status'
+//         url = 'https://reparo24.com/web/track_product_order_status'
 //       }
       
 //       const formData = new URLSearchParams()

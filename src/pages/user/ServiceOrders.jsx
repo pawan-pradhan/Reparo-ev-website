@@ -19,7 +19,7 @@ const ServiceOrders = () => {
       setLoading(true)
       const token = localStorage.getItem('token')
       
-      const response = await fetch('https://test.reparo24.com/web/get_service_order', {
+      const response = await fetch('https://reparo24.com/web/get_service_order', {
         method: 'GET',
         headers: {
           'Authorization': `Bearer ${token}`,
@@ -120,7 +120,7 @@ const ServiceOrders = () => {
     try {
       const token = localStorage.getItem('token')
       
-      const response = await fetch(`https://test.reparo24.com/web/download_invoice?id=${orderId}`, {
+      const response = await fetch(`https://reparo24.com/web/download_invoice?id=${orderId}`, {
         method: 'GET',
         headers: {
           'Authorization': `Bearer ${token}`,
@@ -291,7 +291,7 @@ export default ServiceOrders
 //       setLoading(true)
 //       const token = localStorage.getItem('token')
       
-//       const response = await fetch('https://test.reparo24.com/web/get_service_order', {
+//       const response = await fetch('https://reparo24.com/web/get_service_order', {
 //         method: 'GET',
 //         headers: {
 //           'Authorization': `Bearer ${token}`,
@@ -377,7 +377,7 @@ export default ServiceOrders
 //   //   try {
 //   //     const token = localStorage.getItem('token')
       
-//   //     const response = await fetch(`https://test.reparo24.com/web/download_invoice?_id=${orderId}`, {
+//   //     const response = await fetch(`https://reparo24.com/web/download_invoice?_id=${orderId}`, {
 //   //       method: 'GET',
 //   //       headers: {
 //   //         'Authorization': `Bearer ${token}`,
@@ -414,7 +414,7 @@ export default ServiceOrders
 //     try {
 //       const token = localStorage.getItem('token')
       
-//       const response = await fetch(`https://test.reparo24.com/web/download_invoice?id=${orderId}`, {
+//       const response = await fetch(`https://reparo24.com/web/download_invoice?id=${orderId}`, {
 //         method: 'GET',
 //         headers: {
 //           'Authorization': `Bearer ${token}`,

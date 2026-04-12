@@ -17,7 +17,7 @@ const Notifications = () => {
       setLoading(true)
       const token = localStorage.getItem('token')
       
-      const response = await fetch('https://test.reparo24.com/web/get_notification', {
+      const response = await fetch('https://reparo24.com/web/get_notification', {
         method: 'GET',
         headers: {
           'Authorization': `Bearer ${token}`,
@@ -77,7 +77,7 @@ const Notifications = () => {
       formData.append('_id', id)
       formData.append('type', type)
       
-      const response = await fetch('https://test.reparo24.com/web/notification-mark-read', {
+      const response = await fetch('https://reparo24.com/web/notification-mark-read', {
         method: 'POST',
         headers: {
           'Authorization': `Bearer ${token}`,
@@ -105,7 +105,7 @@ const Notifications = () => {
     try {
       const token = localStorage.getItem('token')
       
-      const response = await fetch('https://test.reparo24.com/web/notifications-mark-all-read', {
+      const response = await fetch('https://reparo24.com/web/notifications-mark-all-read', {
         method: 'POST',
         headers: {
           'Authorization': `Bearer ${token}`,
