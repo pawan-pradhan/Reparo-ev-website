@@ -6,11 +6,12 @@ import { useProductCart } from '../context/ProductCartContext'
 
 
 // ✅ LIVE RAZORPAY KEY from .env
-const RAZORPAY_KEY = import.meta.env.VITE_RAZORPAY_KEY_ID || 'rzp_live_SUYuHzHNwzbCJP'
+const RAZORPAY_KEY = import.meta.env.VITE_RAZORPAY_KEY_ID || ''
 
 const ProductCheckout = () => {
+  const API_BASE_URL = import.meta.env.VITE_API_BASE_URL
   const navigate = useNavigate()
-  const { isAuthenticated, user } = useSelector((state) => state.auth)
+  const { _isAuthenticated, user } = useSelector((state) => state.auth)
   const { cartItems, getTotals, clearCart } = useProductCart()
   const [orderCreating, setOrderCreating] = useState(false)
   const [razorpayLoaded, setRazorpayLoaded] = useState(false)
@@ -70,7 +71,7 @@ const ProductCheckout = () => {
   const sendFailedPaymentStatus = async (orderId, order_id, reason) => {
     try {
       const token = localStorage.getItem('token')
-      const res = await fetch('https://reparo24.com/web/product_payment_checkout', {
+      const res = await fetch(`${API_BASE_URL}/web/product_payment_checkout`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -160,7 +161,7 @@ const ProductCheckout = () => {
   const verifyProductPayment = async (paymentResponse, orderId) => {
     try {
       const token = localStorage.getItem('token')
-      const res = await fetch('https://reparo24.com/web/product_payment_checkout', {
+      const res = await fetch(`${API_BASE_URL}/web/product_payment_checkout`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -238,7 +239,7 @@ const ProductCheckout = () => {
       
       console.log('Product Order Payload:', orderPayload)
       
-      const response = await fetch('https://reparo24.com/web/create_product_order', {
+      const response = await fetch(`${API_BASE_URL}/web/create_product_order`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

@@ -3,6 +3,7 @@ import React, { useState } from 'react'
 import axios from 'axios'
 
 const ContactSection = () => {
+  const API_BASE_URL = import.meta.env.VITE_API_BASE_URL
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -52,7 +53,7 @@ const ContactSection = () => {
       formBody.append('message', formData.message)
       
       const response = await axios.post(
-        'https://reparo24.com/web/api/contactus',
+        `${API_BASE_URL}/web/api/contactus`,
         formBody.toString(),
         {
           headers: {

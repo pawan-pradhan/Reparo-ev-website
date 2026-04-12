@@ -2,6 +2,7 @@
 import React, { useState, useEffect } from 'react'
 
 const RefundPolicy = () => {
+  const API_BASE_URL = import.meta.env.VITE_API_BASE_URL
   const [content, setContent] = useState('')
   const [loading, setLoading] = useState(true)
 
@@ -11,7 +12,7 @@ const RefundPolicy = () => {
 
   const fetchRefundPolicy = async () => {
     try {
-      const response = await fetch('https://reparo24.com/web/api/get_refund_policy')
+      const response = await fetch(`${API_BASE_URL}/web/api/get_refund_policy`)
       const data = await response.json()
       console.log('Refund Policy Response:', data)
       

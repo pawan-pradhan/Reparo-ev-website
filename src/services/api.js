@@ -1,7 +1,7 @@
 // src/services/api.js
 import axios from 'axios'
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL
 
-const API_BASE_URL = 'https://reparo24.com'
 
 const api = axios.create({
   baseURL: API_BASE_URL,
@@ -151,88 +151,6 @@ export const logoutUser = async () => {
 
 // ==================== ORDER APIs ====================
 
-// Get all orders
-export const getUserOrders = async () => {
-  try {
-    // Replace with actual API endpoint when available
-    // const response = await api.get('/web/user/orders')
-    // return response.data
-    
-    // Mock data for now
-    return {
-      success: true,
-      data: [
-        {
-          id: 101,
-          service: 'Battery Repair',
-          amount: 1499,
-          status: 'Completed',
-          date: '12 Mar 2026',
-          timeline: [
-            { step: 'Order Placed', time: '12 Mar, 10:30 AM', status: 'completed' },
-            { step: 'Technician Assigned', time: '12 Mar, 11:00 AM', status: 'completed' },
-            { step: 'Service In Progress', time: 'Ongoing', status: 'in-progress' },
-            { step: 'Service Completed', time: 'Pending', status: 'pending' },
-          ]
-        },
-        {
-          id: 102,
-          service: 'Motor Repair',
-          amount: 1299,
-          status: 'In Progress',
-          date: '15 Mar 2026',
-          timeline: [
-            { step: 'Order Placed', time: '15 Mar, 09:00 AM', status: 'completed' },
-            { step: 'Technician Assigned', time: '15 Mar, 10:00 AM', status: 'completed' },
-            { step: 'Service In Progress', time: 'Ongoing', status: 'in-progress' },
-            { step: 'Service Completed', time: 'Pending', status: 'pending' },
-          ]
-        },
-        {
-          id: 103,
-          service: 'General Service',
-          amount: 799,
-          status: 'Cancelled',
-          date: '18 Mar 2026',
-        },
-      ]
-    }
-  } catch (error) {
-    console.error('Get Orders Error:', error)
-    throw error.response?.data || { message: 'Failed to load orders' }
-  }
-}
-
-// Get single order details
-export const getOrderDetails = async (orderId) => {
-  try {
-    // Replace with actual API endpoint when available
-    // const response = await api.get(`/web/user/order/${orderId}`)
-    // return response.data
-    
-    // Mock data for now
-    const orders = await getUserOrders()
-    const order = orders.data.find(o => o.id === parseInt(orderId))
-    return { success: true, data: order }
-  } catch (error) {
-    console.error('Get Order Details Error:', error)
-    throw error.response?.data || { message: 'Failed to load order details' }
-  }
-}
-
-// Track order
-export const trackOrder = async (orderId) => {
-  try {
-    // Replace with actual API endpoint when available
-    // const response = await api.get(`/web/user/track-order/${orderId}`)
-    // return response.data
-    
-    return await getOrderDetails(orderId)
-  } catch (error) {
-    console.error('Track Order Error:', error)
-    throw error.response?.data || { message: 'Failed to track order' }
-  }
-}
 
 // Download invoice
 export const downloadInvoice = async (orderId) => {

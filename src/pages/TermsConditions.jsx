@@ -2,6 +2,7 @@
 import React, { useState, useEffect } from 'react'
 
 const TermsConditions = () => {
+  const API_BASE_URL = import.meta.env.VITE_API_BASE_URL
   const [content, setContent] = useState('')
   const [loading, setLoading] = useState(true)
 
@@ -11,7 +12,7 @@ const TermsConditions = () => {
 
   const fetchTermsConditions = async () => {
     try {
-      const response = await fetch('https://reparo24.com/web/api/get_terms_condition')
+      const response = await fetch(`${API_BASE_URL}/web/api/get_terms_condition`)
       const data = await response.json()
       console.log('Terms Conditions Response:', data)
       

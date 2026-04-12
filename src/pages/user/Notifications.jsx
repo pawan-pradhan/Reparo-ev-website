@@ -3,6 +3,8 @@ import React, { useState, useEffect } from 'react'
 import Sidebar from '../../components/user/Sidebar'
 
 const Notifications = () => {
+  const API_BASE_URL = import.meta.env.VITE_API_BASE_URL
+
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
   const [notifications, setNotifications] = useState([])
   const [loading, setLoading] = useState(true)
@@ -17,7 +19,7 @@ const Notifications = () => {
       setLoading(true)
       const token = localStorage.getItem('token')
       
-      const response = await fetch('https://reparo24.com/web/get_notification', {
+      const response = await fetch(`${API_BASE_URL}/web/get_notification`, {
         method: 'GET',
         headers: {
           'Authorization': `Bearer ${token}`,
@@ -77,7 +79,7 @@ const Notifications = () => {
       formData.append('_id', id)
       formData.append('type', type)
       
-      const response = await fetch('https://reparo24.com/web/notification-mark-read', {
+      const response = await fetch(`${API_BASE_URL}/web/notification-mark-read`, {
         method: 'POST',
         headers: {
           'Authorization': `Bearer ${token}`,
@@ -105,7 +107,7 @@ const Notifications = () => {
     try {
       const token = localStorage.getItem('token')
       
-      const response = await fetch('https://reparo24.com/web/notifications-mark-all-read', {
+      const response = await fetch(`${API_BASE_URL}/web/notifications-mark-all-read`, {
         method: 'POST',
         headers: {
           'Authorization': `Bearer ${token}`,

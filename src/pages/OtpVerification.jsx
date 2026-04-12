@@ -8,6 +8,7 @@ import { useProductCart } from '../context/ProductCartContext'
 import { useCart } from '../context/CartContext'
 
 const OtpVerification = () => {
+  const API_BASE_URL = import.meta.env.VITE_API_BASE_URL
   const [otp, setOtp] = useState(['', '', '', ''])
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
@@ -219,7 +220,7 @@ const OtpVerification = () => {
         }
       }
       
-      const resendResponse = await fetch('https://reparo24.com/web/user/resend_otp', {
+      const resendResponse = await fetch(`${API_BASE_URL}/web/user/resend_otp`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/x-www-form-urlencoded',

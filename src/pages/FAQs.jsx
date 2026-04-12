@@ -3,6 +3,7 @@ import React, { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 
 const FAQs = () => {
+  const API_BASE_URL = import.meta.env.VITE_API_BASE_URL
   const [faqs, setFaqs] = useState([])
   const [loading, setLoading] = useState(true)
   const [activeIndex, setActiveIndex] = useState(null)
@@ -13,7 +14,7 @@ const FAQs = () => {
 
   const fetchFAQs = async () => {
     try {
-      const response = await fetch('https://reparo24.com/web/api/get_all_faqs')
+      const response = await fetch(`${API_BASE_URL}/web/api/get_all_faqs`)
       const data = await response.json()
       console.log('FAQs Response:', data)
       

@@ -6,6 +6,7 @@ import { Link } from 'react-router-dom'
 import Sidebar from '../../components/user/Sidebar'
 
 const Dashboard = () => {
+  const API_BASE_URL = import.meta.env.VITE_API_BASE_URL
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
   const [serviceOrders, setServiceOrders] = useState([])
   const [productOrders, setProductOrders] = useState([])
@@ -25,7 +26,7 @@ const Dashboard = () => {
       const token = localStorage.getItem('token')
       
       // ✅ Fetch Dashboard Stats
-      const statsResponse = await fetch('https://reparo24.com/web/api/get_dashboard-data', {
+      const statsResponse = await fetch(`${API_BASE_URL}/web/api/get_dashboard-data`, {
         method: 'GET',
         headers: {
           'Authorization': `Bearer ${token}`,
@@ -44,7 +45,7 @@ const Dashboard = () => {
       }
       
       // ✅ Fetch Service Orders (last 5)
-      const serviceResponse = await fetch('https://reparo24.com/web/get_service_order', {
+      const serviceResponse = await fetch(`${API_BASE_URL}/web/get_service_order`, {
         method: 'GET',
         headers: {
           'Authorization': `Bearer ${token}`,
@@ -68,7 +69,7 @@ const Dashboard = () => {
       }
       
       // ✅ Fetch Product Orders (last 5)
-      const productResponse = await fetch('https://reparo24.com/web/get_product_orderItems', {
+      const productResponse = await fetch(`${API_BASE_URL}/web/get_product_orderItems`, {
         method: 'GET',
         headers: {
           'Authorization': `Bearer ${token}`,
