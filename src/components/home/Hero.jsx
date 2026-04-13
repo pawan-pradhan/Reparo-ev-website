@@ -108,55 +108,113 @@ const Hero = ({ onSearch }) => {
     }
   }
 
-  const handleSearch = async () => {
-  if (!locationId || !service || !model) {
-    alert('Please select all Location, Service, and Model.')
-    return
-  }
+  // const handleSearch = async () => {
+  //   if (!locationId || !service || !model) {
+  //     alert('Please select all Location, Service, and Model.')
+  //     return
+  //   }
 
-  setLoading(true)
-  
-  try {
-    const response = await getFilteredServices(locationId, service, model)
+  //   setLoading(true)
     
-    if (response.success && response.data && response.data.length > 0) {
-      const results = response.data.map((serviceItem) => {
-        const cityNames = serviceItem.city_id?.map(city => city.name).join(', ') || locationName || 'Selected City'
-        
-        // ✅ Get model name from model_id array
-        const modelNames = serviceItem.model_id?.map(model => model.name).join(', ') || ''
-        
-        return {
-          id: serviceItem._id,
-          name: serviceItem.title,
-          price: serviceItem.offer_price ? `₹${serviceItem.offer_price}` : `₹${serviceItem.price}`,
-          originalPrice: serviceItem.price,
-          offerPrice: serviceItem.offer_price,
-          desc: serviceItem.features?.[0]?.title || 'Professional EV service with quality assurance',
-          location: cityNames,
-          model: modelNames,  // ✅ Add model to result
-          serviceId: serviceItem._id,
-          features: serviceItem.features || [],
-          category: serviceItem.servicecategory_id?.name || 'Service'
-        }
-      })
+  //   try {
+  //     const response = await getFilteredServices(locationId, service, model)
       
-      if (onSearch) {
-        onSearch(locationId, service, results)
-      }
-    } else {
-      if (onSearch) {
-        onSearch(locationId, service, [])
-      }
-      alert('No services available for selected location, model and service type')
+  //     if (response.success && response.data && response.data.length > 0) {
+  //       const results = response.data.map((serviceItem) => {
+  //         const cityNames = serviceItem.city_id?.map(city => city.name).join(', ') || locationName || 'Selected City'
+          
+  //         // ✅ Get model name from model_id array
+  //         const modelNames = serviceItem.model_id?.map(model => model.name).join(', ') || ''
+          
+  //         return {
+  //           id: serviceItem._id,
+  //           name: serviceItem.title,
+  //           price: serviceItem.offer_price ? `₹${serviceItem.offer_price}` : `₹${serviceItem.price}`,
+  //           originalPrice: serviceItem.price,
+  //           offerPrice: serviceItem.offer_price,
+  //           desc: serviceItem.features?.[0]?.title || 'Professional EV service with quality assurance',
+  //           location: cityNames,
+  //           model: modelNames,  // ✅ Add model to result
+  //           serviceId: serviceItem._id,
+  //           features: serviceItem.features || [],
+  //           category: serviceItem.servicecategory_id?.name || 'Service'
+  //         }
+  //       })
+        
+  //       if (onSearch) {
+  //         onSearch(locationId, service, results)
+  //       }
+  //     } else {
+  //       if (onSearch) {
+  //         onSearch(locationId, service, [])
+  //       }
+  //       alert('No services available for selected location, model and service type')
+  //     }
+  //   } catch (error) {
+  //     console.error('Search error:', error)
+  //     alert('Failed to fetch services. Please try again.')
+  //   } finally {
+  //     setLoading(false)
+  //   }
+  // }
+
+  // src/components/home/Hero.jsx - handleSearch function mein changes
+
+  const handleSearch = async () => {
+    if (!locationId || !service || !model) {
+      alert('Please select all Location, Service, and Model.')
+      return
     }
-  } catch (error) {
-    console.error('Search error:', error)
-    alert('Failed to fetch services. Please try again.')
-  } finally {
-    setLoading(false)
+
+    setLoading(true)
+    
+    try {
+      const response = await getFilteredServices(locationId, service, model)
+      
+      if (response.success && response.data && response.data.length > 0) {
+        const results = response.data.map((serviceItem) => {
+          const cityNames = serviceItem.city_id?.map(city => city.name).join(', ') || locationName || 'Selected City'
+          const modelNames = serviceItem.model_id?.map(model => model.name).join(', ') || ''
+          
+          // ✅ Get city ID and model ID from the response
+          const cityId = serviceItem.city_id?.[0]?._id || locationId
+          const modelId = serviceItem.model_id?.[0]?._id || model
+          
+          return {
+            id: serviceItem._id,
+            name: serviceItem.title,
+            price: serviceItem.offer_price ? `₹${serviceItem.offer_price}` : `₹${serviceItem.price}`,
+            originalPrice: serviceItem.price,
+            offerPrice: serviceItem.offer_price,
+            desc: serviceItem.features?.[0]?.title || 'Professional EV service',
+            location: cityNames,
+            locationId: cityId,        // ✅ ADD city ID
+            locationName: cityNames,    // ✅ ADD city name
+            model: modelNames,
+            modelId: modelId,           // ✅ ADD model ID
+            modelName: modelNames,      // ✅ ADD model name
+            serviceId: serviceItem._id,
+            features: serviceItem.features || [],
+            category: serviceItem.servicecategory_id?.name || 'Service'
+          }
+        })
+        
+        if (onSearch) {
+          onSearch(locationId, service, results)
+        }
+      } else {
+        if (onSearch) {
+          onSearch(locationId, service, [])
+        }
+        alert('No services available')
+      }
+    } catch (error) {
+      console.error('Search error:', error)
+      alert('Failed to fetch services. Please try again.')
+    } finally {
+      setLoading(false)
+    }
   }
-}
 
 
   return (

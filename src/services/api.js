@@ -364,29 +364,6 @@ export const removeFromCartAPI = removeCartItem
 
 
 
-
-// ==================== SERVICES APIs ====================
-
-// export const getFilteredServices = async (cityId = '', categoryId = '') => {
-//   try {
-//     // Build query params
-//     const params = new URLSearchParams()
-//     if (cityId) params.append('city_id', cityId)
-//     if (categoryId) params.append('servicecategory_id', categoryId)
-    
-//     const queryString = params.toString()
-//     const url = `/web/api/get_filtered_services${queryString ? `?${queryString}` : ''}`
-    
-//     const response = await api.get(url)
-//     console.log('Services API Response:', response.data)
-//     return response.data
-//   } catch (error) {
-//     console.error('Get Services Error:', error)
-//     throw error.response?.data || { message: 'Failed to load services' }
-//   }
-// }
-
-
 // src/services/api.js - Update getFilteredServices function
 
 export const getFilteredServices = async (cityId = '', categoryId = '', modelId = '') => {

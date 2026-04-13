@@ -89,7 +89,7 @@ const OtpVerification = () => {
         return '/product-cart'
       }
       
-      return sessionStorage.getItem('redirectAfterLogin') || '/shop'
+      return sessionStorage.getItem('redirectAfterLogin') || '/products'
     }
     
     if (pendingService) {

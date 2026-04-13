@@ -41,7 +41,12 @@ export const CartProvider = ({ children }) => {
       price: item.offerPrice || item.price,
       originalPrice: item.originalPrice || item.price,
       quantity: item.quantity || 1,
-      image: item.image || '/assets/products/shop.png'
+      image: item.image || '/assets/products/shop.png',
+      // ✅ ADD city and model data
+      locationId: item.locationId,
+      locationName: item.locationName,
+      modelId: item.modelId,
+      modelName: item.modelName
     }
     setCartItems([newItem])
   }

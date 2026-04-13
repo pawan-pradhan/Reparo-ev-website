@@ -13,15 +13,15 @@ const RAZORPAY_KEY = import.meta.env.VITE_RAZORPAY_KEY_ID || ''
 const Checkout = () => {
   const API_BASE_URL = import.meta.env.VITE_API_BASE_URL
   const navigate = useNavigate()
-  const { isAuthenticated, user } = useSelector((state) => state.auth)
-  const { getCartItem, getTotals, clearCart } = useCart()
+  const { _isAuthenticated, user } = useSelector((state) => state.auth)
+  const { getCartItem, _getTotals, clearCart } = useCart()
   
   const [service, setService] = useState(null)
   const [quantity, setQuantity] = useState(1)
   const [orderCreating, setOrderCreating] = useState(false)
   const [razorpayLoaded, setRazorpayLoaded] = useState(false)
-  const [paymentStatus, setPaymentStatus] = useState(null)
-  const [currentOrderId, setCurrentOrderId] = useState(null)
+  const [_paymentStatus, setPaymentStatus] = useState(null)
+  const [_currentOrderId, _setCurrentOrderId] = useState(null)
   
   // ✅ Get saved city from localStorage
   const savedCity = localStorage.getItem('selected_location_name')
@@ -260,7 +260,12 @@ const Checkout = () => {
           pincode: address.pincode,
           notes: address.notes
         },
-        payment_mode: paymentMethod
+        payment_mode: paymentMethod,
+        // ✅ ADD city and model data
+        city_id: service.locationId || localStorage.getItem('selected_location_id'),
+        city_name: service.locationName || localStorage.getItem('selected_location_name'),
+        model_id: service.modelId || localStorage.getItem('selected_model_id'),
+        model_name: service.modelName || localStorage.getItem('selected_model_name')
       }
       
       // console.log('Order Payload:', orderPayload)

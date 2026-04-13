@@ -104,6 +104,12 @@ const ServiceDetails = () => {
       return
     }
 
+    // ✅ Get saved city and model from localStorage
+    const savedLocationId = localStorage.getItem('selected_location_id')
+    const savedLocationName = localStorage.getItem('selected_location_name')
+    const savedModelId = localStorage.getItem('selected_model_id')
+    const savedModelName = localStorage.getItem('selected_model_name')
+
     addToCart({
       id: service.serviceId,
       serviceId: service.serviceId,
@@ -112,7 +118,13 @@ const ServiceDetails = () => {
       originalPrice: service.originalPrice,
       quantity: quantity,
       image: service.image,
-      type: 'service'
+      type: 'service',
+
+      // ✅ ADD city and model data
+      locationId: savedLocationId,
+      locationName: savedLocationName,
+      modelId: savedModelId || service.modelId,
+      modelName: savedModelName || service.model
     })
     
     navigate('/cart')

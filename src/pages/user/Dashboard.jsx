@@ -61,7 +61,7 @@ const Dashboard = () => {
           id: order.order_id || order._id,
           service: order.service_id?.title || 'Service',
           amount: order.order_total_amount || 0,
-          status: order.status || 'pending',
+          status: order.order_status || '--',
           date: formatDate(order.created_at),
           orderId: order._id
         }))
@@ -85,7 +85,7 @@ const Dashboard = () => {
           id: order._id,
           product: order.product_name || order.product_id?.product_name || 'Product',
           amount: order.sub_total + (order.sub_total * 0.18),
-          status: order.status || 'pending',
+          status: order.order_status || '--',
           date: formatDate(order.created_at),
           orderId: order._id
         }))
