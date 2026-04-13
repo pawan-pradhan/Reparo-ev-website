@@ -32,7 +32,7 @@ const Navbar = () => {
     { path: '/products', label: 'Products' },
     { path: '/services', label: 'Services' },
     // { path: '/partners', label: 'Partners' },
-    { path: '/partners', label: 'Partners With Us' },
+    { path: '/partners', label: 'Partner With Us' },
     // { path: '/social', label: 'Social Media' },
     { path: '/contact', label: 'Contact Us' },
     { path: '/faqs', label: "FAQ's" },

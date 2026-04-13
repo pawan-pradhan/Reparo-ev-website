@@ -42,6 +42,7 @@ const ServiceOrders = () => {
           totalAmount: order.order_total_amount || 0,
           status: order.order_status || 'order_ongoing',
           date: formatDate(order.created_at),
+          // date: formatDate(order.created_at) || formatDate(order.createdAt),
           paymentMode: order.payment_mode,
           paymentStatus: order.payment_status,
           quantity: order.quantity || 1,
