@@ -37,6 +37,9 @@ import TrackOrder from './pages/user/TrackOrder'
 import Profile from './pages/user/Profile'
 import Support from './pages/user/Support'
 import Notifications from './pages/user/Notifications'
+import PrivacyPolicy from './pages/PrivacyPolicy'
+import TermsConditions from './pages/TermsConditions'
+import RefundPolicy from './pages/RefundPolicy'
 
 
 function App() {
@@ -83,6 +86,10 @@ function App() {
         <Route path="/faqs" element={<FAQs />} />
         <Route path="/service/:id" element={<ServiceDetails />} />
         <Route path="/product/:id" element={<ProductDetails />} />
+
+        <Route path="/privacy-policy" element={<PrivacyPolicy />} />
+        <Route path="/terms-conditions" element={<TermsConditions />} />
+        <Route path="/refund-policy" element={<RefundPolicy />} />
 
      
         {/* Service Order Routes */}
