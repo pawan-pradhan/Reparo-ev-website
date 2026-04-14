@@ -243,11 +243,11 @@ const Services = () => {
                   </div>
                   
                   {/* ✅ Display Model if available */}
-                  {service.model && (
+                  {/* {service.model && (
                     <p className="text-gray-500 text-xs mb-1">
                       🚗 Model: {service.model}
                     </p>
-                  )}
+                  )} */}
                   
                   <p className="text-gray-500 text-sm mb-2">Starting from ₹{service.price}</p>
                   <p className="text-gray-400 text-xs mb-4 line-clamp-2">{service.description}</p>

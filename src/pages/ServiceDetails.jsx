@@ -196,11 +196,11 @@ const ServiceDetails = () => {
             </h2>
 
             {/* ✅ Display Model if available */}
-            {service.model && (
+            {/* {service.model && (
               <p className="text-gray-500 text-sm mb-2">
                 🚗 Compatible Model: {service.model}
               </p>
-            )}
+            )} */}
 
             {/* PRICE */}
             <div className="price-box mb-3">
